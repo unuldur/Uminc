@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Uminc</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="params">Paramètres</string>
+    <string name="calendrier">Calendrier</string>
+    <string name="note">Notes</string>
+    <string name="accueil">Accueil</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="monday">Lundi</string>
+    <string name="tuesday">Mardi</string>
+    <string name="friday">Vendredi</string>
+    <string name="thursday">Jeudi</string>
+    <string name="wednesday">Mercredi</string>
+    <string name="eight">8h</string>
+    <string name="nine">9h</string>
+    <string name="ten">10h</string>
+    <string name="eleven">11h</string>
+    <string name="twelve">12h</string>
+    <string name="thirteen">13h</string>
+    <string name="fourteen">14h</string>
+    <string name="fifteen">15h</string>
+    <string name="sixteen">16h</string>
+    <string name="seventeen">17h</string>
+    <string name="eighteen">18h</string>
+    <string name="nineteen">19h</string>
+    <string name="twenty">20h</string>
+</resources>
