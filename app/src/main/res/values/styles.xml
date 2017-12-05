@@ -16,4 +16,9 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="AppTheme.GridLayout" parent="AppTheme">
+        <item name="android:background">@drawable/border</item>
+    </style>
+
+
 </resources>

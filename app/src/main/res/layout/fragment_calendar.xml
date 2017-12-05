@@ -6,7 +6,6 @@
     android:orientation="vertical"
     tools:context="com.unuldur.uminc.CalendarFragment">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,173 +33,181 @@
 
     </LinearLayout>
 
-    <GridLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:useDefaultMargins="true"
-        android:layout_margin="5dp"
-        android:orientation="horizontal"
-        android:columnCount="6"
-        android:rowCount="54">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_row="0"
-            android:layout_columnWeight="1"
-            android:textAlignment="center"
-            android:text="@string/monday" />
+        android:layout_weight="2">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <GridLayout
+            android:id="@+id/grid_calendar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_column="2"
-            android:layout_row="0"
-            android:layout_columnWeight="1"
-            android:textAlignment="center"
-            android:text="@string/tuesday" />
+            android:layout_margin="5dp"
+            android:columnCount="6"
+            android:orientation="horizontal"
+            android:rowCount="54">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="3"
-            android:layout_row="0"
-            android:layout_columnWeight="1"
-            android:textAlignment="center"
-            android:text="@string/wednesday" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill"
+                android:layout_row="0"
+                android:text="@string/monday"
+                android:textAlignment="center" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="4"
-            android:layout_row="0"
-            android:layout_columnWeight="1"
-            android:textAlignment="center"
-            android:text="@string/thursday" />
+            <TextView
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="5"
-            android:layout_row="0"
-            android:layout_columnWeight="1"
-            android:textAlignment="center"
-            android:text="@string/friday" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill"
+                android:layout_row="0"
+                android:text="@string/tuesday"
+                android:textAlignment="center" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="1"
-            android:layout_rowSpan="4"
-            android:text="@string/eight"
-            android:layout_rowWeight="1"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="5"
-            android:layout_rowSpan="4"
-            android:text="@string/nine"
-            android:layout_rowWeight="1"/>
+            <TextView
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="9"
-            android:layout_rowSpan="4"
-            android:text="@string/ten"
-            android:layout_rowWeight="1"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="3"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill"
+                android:layout_row="0"
+                android:text="@string/wednesday"
+                android:textAlignment="center" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="13"
-            android:layout_rowSpan="4"
-            android:text="@string/eleven"
-            android:layout_rowWeight="1"/>
+            <TextView
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="17"
-            android:layout_rowSpan="4"
-            android:text="@string/twelve"
-            android:layout_rowWeight="1"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="4"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill"
+                android:layout_row="0"
+                android:text="@string/thursday"
+                android:textAlignment="center" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="21"
-            android:layout_rowSpan="4"
-            android:text="@string/thirteen"
-            android:layout_rowWeight="1"/>
+            <TextView
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="25"
-            android:layout_rowSpan="4"
-            android:text="@string/fourteen"
-            android:layout_rowWeight="1"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="5"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill"
+                android:layout_row="0"
+                android:text="@string/friday"
+                android:textAlignment="center" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="29"
-            android:layout_rowSpan="4"
-            android:text="@string/fifteen"
-            android:layout_rowWeight="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_gravity="fill"
+                android:layout_row="1"
+                android:layout_rowSpan="4"
+                android:text="@string/eight" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="33"
-            android:layout_rowSpan="4"
-            android:text="@string/sixteen"
-            android:layout_rowWeight="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_gravity="fill"
+                android:layout_row="5"
+                android:layout_rowSpan="4"
+                android:text="@string/nine" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="37"
-            android:layout_rowSpan="4"
-            android:text="@string/seventeen"
-            android:layout_rowWeight="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="9"
+                android:layout_rowSpan="4"
+                android:text="@string/ten" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="41"
-            android:layout_rowSpan="4"
-            android:text="@string/eighteen"
-            android:layout_rowWeight="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="13"
+                android:layout_rowSpan="4"
+                android:text="@string/eleven" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="45"
-            android:layout_rowSpan="4"
-            android:text="@string/nineteen"
-            android:layout_rowWeight="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="17"
+                android:layout_rowSpan="4"
+                android:text="@string/twelve" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="49"
-            android:layout_rowSpan="4"
-            android:text="@string/twenty"
-            android:layout_rowWeight="1"/>
-    </GridLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="21"
+                android:layout_rowSpan="4"
+                android:text="@string/thirteen" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="25"
+                android:layout_rowSpan="4"
+                android:text="@string/fourteen" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="29"
+                android:layout_rowSpan="4"
+                android:text="@string/fifteen" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="33"
+                android:layout_rowSpan="4"
+                android:text="@string/sixteen" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="37"
+                android:layout_rowSpan="4"
+                android:text="@string/seventeen" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="41"
+                android:layout_rowSpan="4"
+                android:text="@string/eighteen" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="45"
+                android:layout_rowSpan="4"
+                android:text="@string/nineteen" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="49"
+                android:layout_rowSpan="4"
+                android:text="@string/twenty" />
+        </GridLayout>
+
+    </ScrollView>
+
 </LinearLayout>
