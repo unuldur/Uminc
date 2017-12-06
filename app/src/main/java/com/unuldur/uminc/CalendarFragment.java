@@ -1,6 +1,7 @@
 package com.unuldur.uminc;
 
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -57,6 +58,18 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
         calendar.addEvent(new SimpleEvent("titre 1", "15-15 201",
                 new GregorianCalendar(2017,11,4,8,30,0),
                 new GregorianCalendar(2017,11,4,10,30,0)));
+        calendar.addEvent(new SimpleEvent("titre 1", "15-15 201",
+                new GregorianCalendar(2017,11,5,8,30,0),
+                new GregorianCalendar(2017,11,5,10,30,0)));
+        calendar.addEvent(new SimpleEvent("titre 1", "15-15 201",
+                new GregorianCalendar(2017,11,6,8,30,0),
+                new GregorianCalendar(2017,11,6,10,30,0)));
+        calendar.addEvent(new SimpleEvent("titre 1", "15-15 201",
+                new GregorianCalendar(2017,11,7,8,30,0),
+                new GregorianCalendar(2017,11,7,10,30,0)));
+        calendar.addEvent(new SimpleEvent("titre 1", "15-15 201",
+                new GregorianCalendar(2017,11,8,8,30,0),
+                new GregorianCalendar(2017,11,8,10,30,0)));
         calendar.addEvent(new SimpleEvent("titre 1 - 2", "15-15 201",
                 new GregorianCalendar(2017,11,4,10,45,0),
                 new GregorianCalendar(2017,11,4,12,45,0)));
@@ -96,7 +109,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
                 gridLayout.addView(s, glp);
             }
         }
-        for(IEvent e:events) {
+        for(final IEvent e:events) {
             Button b = new Button(getContext());
             b.setBackgroundColor(Color.GRAY);
             b.setText(String.format("%s\n%s", e.getTitre(), e.getLocalisation()));
@@ -105,20 +118,27 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
             int indexrow = (cStart.get(Calendar.HOUR_OF_DAY) - 8) * 4 + (cStart.get(Calendar.MINUTE) / 15) + 1;
             int indexrowend = (cEnd.get(Calendar.HOUR_OF_DAY) - 8) * 4 + (cEnd.get(Calendar.MINUTE) / 15) + 1;
             b.setHeight(HEIGH * (indexrowend - indexrow + 1));
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Dialog d = new PopupEvent(getContext(), e);
+                    d.show();
+                }
+            });
             GridLayout.Spec row = GridLayout.spec(indexrow, indexrowend - indexrow);
-            GridLayout.Spec col = GridLayout.spec(cStart.get(Calendar.DAY_OF_WEEK));
+            GridLayout.Spec col = GridLayout.spec(cStart.get(Calendar.DAY_OF_WEEK) - 1);
             Log.d("Calendar", "" + cStart.get(Calendar.DAY_OF_WEEK));
             GridLayout.LayoutParams gridLayoutParam = new GridLayout.LayoutParams(row, col);
+            gridLayoutParam.setMargins(1,1,1,1);
             gridLayout.addView(b, gridLayoutParam);
 
         }
         Log.d("Calendar", "============================");
     }
 
-    private List<String> getWeeks(){
+    private List<Calendar> getWeeks(){
         int current_week = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
-        DateFormat sdf = SimpleDateFormat.getDateInstance();
-        List<String> weeks = new ArrayList<>();
+        List<Calendar> weeks = new ArrayList<>();
         for (int i = current_week - 10; i < current_week + 10; i++) {
             int j = i;
 
@@ -135,7 +155,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
             cal.set(Calendar.WEEK_OF_YEAR,j);
             cal.getTime();
             cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-            weeks.add("Semaine " + j + ": " + sdf.format(cal.getTime()));
+            weeks.add(cal);
         }
         return weeks;
     }
@@ -145,8 +165,8 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
         super.onViewCreated(view, savedInstanceState);
 
         final Spinner spinner = getView().findViewById(R.id.spinnerCalendar);
-        final List<String> weeks = getWeeks();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, weeks);
+        final List<Calendar> weeks = getWeeks();
+        EventAdpater adapter = new EventAdpater(getContext(), android.R.layout.simple_spinner_item, weeks);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
@@ -177,12 +197,12 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
 
         grdl = getView().findViewById(R.id.grid_calendar);
         nbChildBaseCount = grdl.getChildCount();
-        initGrid(grdl, 49, 2017);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        //initGrid(grdl, 48, 2017);
+        Calendar cal = (Calendar)adapterView.getItemAtPosition(i);
+        initGrid(grdl, cal.get(Calendar.WEEK_OF_YEAR), cal.get(Calendar.YEAR));
     }
 
     @Override
