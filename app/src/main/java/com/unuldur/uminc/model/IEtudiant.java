@@ -9,6 +9,6 @@ import java.util.List;
 public interface IEtudiant {
     String getNUmEtu();
     String getPassword();
-    List<String> getUEs();
-    List<String> getActualUEs();
+    List<UE> getUEs();
+    List<UE> getActualUEs();
 }

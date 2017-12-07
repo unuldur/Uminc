@@ -6,6 +6,11 @@ import android.util.Log;
 
 import com.unuldur.uminc.R;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +19,8 @@ import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Unuldur on 06/12/2017.
@@ -114,7 +121,23 @@ public class Connection implements IConnection{
                 }
             }
         }
-        Log.d(LOG_TAG,dbufrHtmlStr);
-        return new Etudiant();
+        Document doc = Jsoup.parse(dbufrHtmlStr);
+        Element body = doc.body();
+        Elements tables = body.getElementsByClass("Table");
+        return new Etudiant(numEtu,studentPassword, getUEs(tables.get(0)));
+    }
+
+
+    private List<UE> getUEs(Element ues){
+        List<UE> uesL = new ArrayList<>();
+        Elements rows = ues.getElementsByTag("tr");
+        for (Element row: rows){
+            Elements cols = row.getElementsByTag("td");
+            if(cols.size() == 0){
+                continue;
+            }
+            uesL.add(new UE(cols.get(1).text(),cols.get(3).text(),cols.get(0).text()));
+        }
+        return uesL;
     }
 }

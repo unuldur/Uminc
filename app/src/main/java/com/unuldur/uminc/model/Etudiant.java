@@ -1,5 +1,6 @@
 package com.unuldur.uminc.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,23 +8,38 @@ import java.util.List;
  */
 
 public class Etudiant implements IEtudiant {
+    private String numEtu;
+    private String password;
+    private List<UE> ues;
+    private List<UE> actualsUes;
+
+    public Etudiant(String numEtu, String password, List<UE> ues) {
+        this.numEtu = numEtu;
+        this.password = password;
+        this.ues = ues;
+        this.actualsUes = new ArrayList<>();
+    }
+
+    public Etudiant() {
+    }
+
     @Override
     public String getNUmEtu() {
-        return null;
+        return numEtu;
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
-    public List<String> getUEs() {
-        return null;
+    public List<UE> getUEs() {
+        return ues;
     }
 
     @Override
-    public List<String> getActualUEs() {
-        return null;
+    public List<UE> getActualUEs() {
+        return actualsUes;
     }
 }
