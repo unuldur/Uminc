@@ -1,5 +1,6 @@
 package com.unuldur.uminc.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Created by Unuldur on 06/12/2017.
  */
 
-public class Etudiant implements IEtudiant {
+public class Etudiant implements IEtudiant{
     private String numEtu;
     private String password;
     private List<UE> ues;

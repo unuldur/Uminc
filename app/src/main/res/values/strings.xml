@@ -47,4 +47,5 @@
     <string name="numero_etu">numéro étudiant</string>
     <string name="dbufr_grade_separator">/</string>
     <string name="dbufr_charset" translatable="false">ISO-8859-15</string>
+    <string name="Valider">valider</string>
 </resources>
