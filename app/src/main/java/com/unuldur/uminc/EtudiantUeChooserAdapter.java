@@ -43,6 +43,7 @@ public class EtudiantUeChooserAdapter extends ArrayAdapter<UE> {
         tv.setText(String.format("%s - %s", ue.getId(), ue.getName()));
 
         final CheckBox cb = convertView.findViewById(R.id.ueCheck);
+        cb.setChecked(etudiant.getActualUEs().contains(ue));
         cb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

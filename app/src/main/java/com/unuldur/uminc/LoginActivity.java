@@ -3,6 +3,7 @@ package com.unuldur.uminc;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -31,11 +32,18 @@ import android.widget.TextView;
 import com.unuldur.uminc.model.Connection;
 import com.unuldur.uminc.model.IConnection;
 import com.unuldur.uminc.model.IEtudiant;
+import com.unuldur.uminc.model.IEvent;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
@@ -74,6 +82,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String filename = getString(R.string.etudiant_saver);
+        FileInputStream outputStream;
+        IEtudiant etu;
+        try {
+            outputStream = openFileInput(filename);
+            ObjectInputStream oos = new ObjectInputStream(outputStream);
+            etu = (IEtudiant) oos.readObject();
+            outputStream.close();
+        } catch (Exception e) {
+            etu = null;
+        }
+        if(etu != null){
+            changeActivity(etu, MainActivity.class);
+        }
+
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mnumeroEtuView = (AutoCompleteTextView) findViewById(R.id.numero_etu);
@@ -222,6 +246,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mnumeroEtuView.setAdapter(adapter);
     }
 
+    private void changeActivity(IEtudiant etudiant, Class<?> clas){
+        Intent intent = new Intent(getApplicationContext(), clas);
+        intent.putExtra("etudiant", etudiant);
+        startActivity(intent);
+        finish();
+    }
+
 
     private interface ProfileQuery {
         String[] PROJECTION = {
@@ -259,10 +290,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success != null) {
-                Intent intent = new Intent(getApplicationContext(), UeChooserActivity.class);
-                intent.putExtra("etudiant", success);
-                startActivity(intent);
-                finish();
+                changeActivity(success, UeChooserActivity.class);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

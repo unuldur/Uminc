@@ -30,12 +30,12 @@
     <string name="eighteen">18h</string>
     <string name="nineteen">19h</string>
     <string name="twenty">20h</string>
-    <string name="title_activity_login">Connection</string>
+    <string name="title_activity_login">Connexion</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Mot de passe</string>
-    <string name="action_sign_in">Connection</string>
+    <string name="action_sign_in">Connexion</string>
     <string name="action_sign_in_short">Se connecter</string>
     <string name="error_invalid_email">L\'email est invalide</string>
     <string name="error_invalid_password">Le mot est nécessaire</string>
@@ -48,4 +48,8 @@
     <string name="dbufr_grade_separator">/</string>
     <string name="dbufr_charset" translatable="false">ISO-8859-15</string>
     <string name="Valider">valider</string>
+    <string name="etudiant_saver">etudiant_xcvhe</string>
+    <string name="changeEtudiantString">Changer de compte</string>
+    <string name="ChangeUe">Changer les UEs</string>
+    <string name="parametres">Paramétres</string>
 </resources>
