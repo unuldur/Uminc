@@ -52,4 +52,9 @@
     <string name="changeEtudiantString">Changer de compte</string>
     <string name="ChangeUe">Changer les UEs</string>
     <string name="parametres">Paramétres</string>
+
+    <!-- string for caldavzap -->
+    <string name="caldavzap_login">student.master</string>
+    <string name="caldavzap_password">guest</string>
+    <string name="caldavzap_config_adress">https://cal.ufr-info-p6.jussieu.fr/master/config.js</string>
 </resources>

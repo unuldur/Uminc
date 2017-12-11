@@ -3,7 +3,6 @@ package com.unuldur.uminc;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -18,7 +17,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,25 +27,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.unuldur.uminc.model.Connection;
-import com.unuldur.uminc.model.IConnection;
+import com.unuldur.uminc.model.DbufrConnection;
+import com.unuldur.uminc.model.IDbufrConnection;
 import com.unuldur.uminc.model.IEtudiant;
-import com.unuldur.uminc.model.IEvent;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.ObjectInput;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Authenticator;
-import java.net.HttpURLConnection;
-import java.net.PasswordAuthentication;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -272,11 +257,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mNumEtu;
         private final String mPassword;
-        private final IConnection connection;
+        private final IDbufrConnection connection;
         UserLoginTask(String email, String password) {
             mNumEtu = email;
             mPassword = password;
-            connection = new Connection(getBaseContext());
+            connection = new DbufrConnection(getBaseContext());
         }
 
         @Override
