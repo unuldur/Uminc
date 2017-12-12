@@ -25,7 +25,7 @@ import javax.net.ssl.HttpsURLConnection;
 public class Connection implements IConnection {
 
     private Context context;
-    private static final String LOG_TAG = "DbufrConnection";
+    private static final String LOG_TAG = "Connection";
 
     public Connection(Context context) {
         this.context = context;
@@ -46,7 +46,7 @@ public class Connection implements IConnection {
         Log.d(LOG_TAG, "Starting sync");
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
-
+        Log.d(LOG_TAG, address);
         String pageStr ;
 
         try {

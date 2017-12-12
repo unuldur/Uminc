@@ -9,6 +9,10 @@ import com.unuldur.uminc.connection.Connection;
 import com.unuldur.uminc.connection.IConnection;
 import com.unuldur.uminc.model.Etudiant;
 import com.unuldur.uminc.model.ICalendar;
+import com.unuldur.uminc.model.IEtudiant;
+import com.unuldur.uminc.model.IEvent;
+import com.unuldur.uminc.model.SimpleCalendar;
+import com.unuldur.uminc.model.UE;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -26,20 +30,59 @@ import java.util.List;
 public class FullCalendarRecuperator implements ICalendarRecuperator {
     private IConnection connection;
     private Context context;
+    private ICalendarDownloader downloader;
     public FullCalendarRecuperator(Context context) {
         connection = new Connection(context);
         this.context = context;
+        downloader = new SimpleCalendarDownloader(connection, context);
     }
 
     public FullCalendarRecuperator(IConnection connection, Context context) {
         this.connection = connection;
         this.context = context;
+        downloader = new SimpleCalendarDownloader(connection, context);
     }
 
     @Override
-    public ICalendar getCalendar(Etudiant e) {
+    public ICalendar getCalendar(IEtudiant e) {
+        List<String> globalAdresses = getGlobalAdress();
+        if(globalAdresses == null) return null;
+        List<String> allAdresses = getAllAdress(globalAdresses);
+        if(allAdresses == null) return null;
+        List<String> adressOk = new ArrayList<>();
+        ICalendar cal = new SimpleCalendar();
+        for (String adress: allAdresses) {
+            if(testAdresse(adress, cal, e)){
+                adressOk.add(adress);
+            }
+        }
+        return cal;
+    }
 
-        return null;
+    private boolean testAdresse(String adress, ICalendar cal, IEtudiant e){
+        List<IEvent> events = downloader.getEventsFromAdress(adress);
+        if(events == null) return false;
+        boolean ok = false;
+        Log.d("CalendarRecuperator", adress);
+        for(IEvent event: events){
+            Log.d("CalendarRecuperator", event.getTitre());
+            for(UE ue :e.getActualUEs()){
+                String[] eventSplit = event.getTitre().split("-");
+                String gr = "";
+                if(ue.getGroupe().getBytes().length >= 3){
+                    gr = String.valueOf(ue.getGroupe().getBytes()[2]);
+                }
+                Log.d("CalendarRecuperator", gr);
+                if(eventSplit[0].contains(ue.getId()) &&
+                        (eventSplit[1].contains("Cours") ||
+                                eventSplit[1].contains("Examen") ||
+                                eventSplit[1].contains(gr))){
+                    cal.addEvent(event);
+                    ok = true;
+                }
+            }
+        }
+        return ok;
     }
 
     public List<String> getGlobalAdress(){
@@ -66,6 +109,7 @@ public class FullCalendarRecuperator implements ICalendarRecuperator {
         List<String> adresss = new ArrayList<>();
         for (String adress: globalAdress) {
             String res = connection.getPage(adress,"PROPFIND", context.getString(R.string.caldavzap_login), context.getString(R.string.caldavzap_password),1);
+            if(res == null) return null;
             try {
                adresss.addAll(getAdress(res));
             } catch (XmlPullParserException e) {
@@ -90,7 +134,7 @@ public class FullCalendarRecuperator implements ICalendarRecuperator {
             if(xpp.getName().equals("response")){
                 String address = parseResponse(xpp);
                 if(address != null){
-                    adress.add(address);
+                    adress.add(context.getString(R.string.caldavzap_base_adress) + address);
                 }
             }else{
                 skip(xpp);

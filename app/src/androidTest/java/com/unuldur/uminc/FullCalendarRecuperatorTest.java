@@ -12,6 +12,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
@@ -31,6 +33,7 @@ public class FullCalendarRecuperatorTest {
     public void testGetAllAdress(){
         Context appContext = InstrumentationRegistry.getTargetContext();
         FullCalendarRecuperator cr = new FullCalendarRecuperator(appContext);
-        assertFalse(cr.getAllAdress(cr.getGlobalAdress()).isEmpty());
+        List<String> adresss = cr.getAllAdress(cr.getGlobalAdress());
+        assertFalse(adresss.isEmpty());
     }
 }

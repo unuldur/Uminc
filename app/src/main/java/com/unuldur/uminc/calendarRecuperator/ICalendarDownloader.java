@@ -10,4 +10,5 @@ import java.util.List;
 
 interface ICalendarDownloader {
     List<IEvent> getEventsFromAdresses(List<String> adresses);
+    List<IEvent> getEventsFromAdress(String address);
 }

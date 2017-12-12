@@ -56,5 +56,6 @@
     <!-- string for caldavzap -->
     <string name="caldavzap_login">student.master</string>
     <string name="caldavzap_password">guest</string>
+    <string name="caldavzap_base_adress">https://cal.ufr-info-p6.jussieu.fr</string>
     <string name="caldavzap_config_adress">https://cal.ufr-info-p6.jussieu.fr/master/config.js</string>
 </resources>
