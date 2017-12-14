@@ -19,6 +19,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -32,13 +33,13 @@ public class FullCalendarRecuperator implements ICalendarRecuperator {
     public FullCalendarRecuperator(Context context) {
         connection = new Connection(context);
         this.context = context;
-        downloader = new Ical4jCalendarDownloader(connection, context);
+        downloader = new MyCalendarDownloader(connection, context);
     }
 
     public FullCalendarRecuperator(IConnection connection, Context context) {
         this.connection = connection;
         this.context = context;
-        downloader = new Ical4jCalendarDownloader(connection, context);
+        downloader = new MyCalendarDownloader(connection, context);
     }
 
     @Override
@@ -65,16 +66,21 @@ public class FullCalendarRecuperator implements ICalendarRecuperator {
         Log.d("CalendarRecuperator", adress);
         for(IEvent event: events){
             Log.d("CalendarRecuperator", event.getTitre());
+            String[] eventSplit = event.getTitre().split("-");
+            Log.d("CalendarRecuperator", Arrays.toString(eventSplit));
+            if (eventSplit.length < 3) continue;
             for(UE ue :e.getActualUEs()){
-                String[] eventSplit = event.getTitre().split("-");
                 String gr = "";
                 if(ue.getGroupe().length() >= 3){
                     gr = String.valueOf(ue.getGroupe().toCharArray()[2]);
                 }
+                Log.d("CalendarRecuperator", String.valueOf(eventSplit[0].contains(ue.getId())));
+                Log.d("CalendarRecuperator", String.valueOf(eventSplit[1].contains("Cours")));
                 if(eventSplit[0].contains(ue.getId()) &&
                         (eventSplit[1].contains("Cours") ||
                                 eventSplit[1].contains("Examen") ||
                                 eventSplit[1].contains(gr))){
+                    Log.d("CalendarRecuperator", "Ajouter");
                     cal.addEvent(event);
                     ok = true;
                 }
@@ -131,7 +137,7 @@ public class FullCalendarRecuperator implements ICalendarRecuperator {
             }
             if(xpp.getName().equals("response")){
                 String address = parseResponse(xpp);
-                if(address != null){
+                if(address != null && !address.contains("caldav.php/MasterInfo/")){
                     adress.add(context.getString(R.string.caldavzap_base_adress) + address);
                 }
             }else{

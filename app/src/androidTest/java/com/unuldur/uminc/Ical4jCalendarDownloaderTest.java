@@ -53,7 +53,7 @@ public class Ical4jCalendarDownloaderTest {
     public void test6(){
         Context appContext = InstrumentationRegistry.getTargetContext();
         ICalendarDownloader scd = new MyCalendarDownloader(new Connection(appContext), appContext);
-        List<IEvent> events = scd.getEventsFromAdress("https://cal.ufr-info-p6.jussieu.fr/caldav.php/ANDROIDE/M1_ANDROIDE");
+        List<IEvent> events = scd.getEventsFromAdress("https://cal.ufr-info-p6.jussieu.fr/caldav.php/IMA/M1_IMA/");
         assertFalse(events.isEmpty());
     }
 
@@ -72,7 +72,7 @@ public class Ical4jCalendarDownloaderTest {
     @Test
     public void test4(){
         Context appContext = InstrumentationRegistry.getTargetContext();
-        ICalendarDownloader scd = new BiWeeklyCalendarDownloader(new Connection(appContext), appContext);
+        ICalendarDownloader scd = new MyCalendarDownloader(new Connection(appContext), appContext);
         TaskCalendarDownloader t1 = new TaskCalendarDownloader(scd);
         TaskCalendarDownloader t2 = new TaskCalendarDownloader(scd);
         TaskCalendarDownloader t3 = new TaskCalendarDownloader(scd);
@@ -80,11 +80,11 @@ public class Ical4jCalendarDownloaderTest {
         TaskCalendarDownloader t5 = new TaskCalendarDownloader(scd);
         TaskCalendarDownloader t6 = new TaskCalendarDownloader(scd);
         t1.execute("https://cal.ufr-info-p6.jussieu.fr/caldav.php/IMA/M1_IMA/");
-        t1.execute("https://cal.ufr-info-p6.jussieu.fr/caldav.php/ANDROIDE/M1_ANDROIDE");
-        t1.execute("https://cal.ufr-info-p6.jussieu.fr/caldav.php/ANDROIDE/M1_ANDROIDE");
-        t1.execute("https://cal.ufr-info-p6.jussieu.fr/caldav.php/ANDROIDE/M1_ANDROIDE");
-        t1.execute("https://cal.ufr-info-p6.jussieu.fr/caldav.php/ANDROIDE/M1_ANDROIDE");
-        t1.execute("https://cal.ufr-info-p6.jussieu.fr/caldav.php/ANDROIDE/M1_ANDROIDE");
+        t2.execute("https://cal.ufr-info-p6.jussieu.fr/caldav.php/ANDROIDE/M1_ANDROIDE");
+        t3.execute("https://cal.ufr-info-p6.jussieu.fr/caldav.php/ANDROIDE/M1_ANDROIDE");
+        t4.execute("https://cal.ufr-info-p6.jussieu.fr/caldav.php/ANDROIDE/M1_ANDROIDE");
+        t5.execute("https://cal.ufr-info-p6.jussieu.fr/caldav.php/ANDROIDE/M1_ANDROIDE");
+        t6.execute("https://cal.ufr-info-p6.jussieu.fr/caldav.php/ANDROIDE/M1_ANDROIDE");
         //List<IEvent> events = scd.getEventsFromAdress("https://cal.ufr-info-p6.jussieu.fr/caldav.php/IMA/M1_IMA/");
         assertFalse(false);
     }
