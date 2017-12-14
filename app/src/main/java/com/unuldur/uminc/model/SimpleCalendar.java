@@ -10,11 +10,11 @@ import java.util.Map;
  */
 
 public class SimpleCalendar implements ICalendar {
-    Map<Integer, List<IEvent>> maps = new HashMap<>();
+    Map<String, List<IEvent>> maps = new HashMap<>();
 
     @Override
     public void addEvent(IEvent event) {
-        int id = event.getWeek() * event.getYear();
+        String id = event.getWeek() +" "+ event.getYear();
         List<IEvent> simple = maps.get(id);
         if(simple == null){
             simple = new ArrayList<>();
@@ -34,7 +34,16 @@ public class SimpleCalendar implements ICalendar {
 
     @Override
     public List<IEvent> getWeeksEvents(int weeks, int year) {
-        return maps.get(weeks * year);
+        return maps.get(weeks +" "+ year);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (IEvent event: getAllEvents()) {
+            sb.append("==========================\n");
+            sb.append(event.toString());
+        }
+        return sb.toString();
+    }
 }

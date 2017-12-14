@@ -32,4 +32,5 @@ dependencies {
     compile 'org.jsoup:jsoup:1.11.2'
     compile 'org.mnode.ical4j:ical4j:1.0.5'
     compile 'backport-util-concurrent:backport-util-concurrent:3.1'
+    compile 'net.sf.biweekly:biweekly:0.6.1'
 }

@@ -1,5 +1,6 @@
 package com.unuldur.uminc.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -48,5 +49,17 @@ public class SimpleEvent implements IEvent {
     @Override
     public String getLocalisation() {
         return localisation;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb =new StringBuilder();
+        SimpleDateFormat sbf = new SimpleDateFormat("dd-MM-yyyy kk:mm");
+        sb.append(sbf.format(startDate.getTime()));
+        sb.append(" : ");
+        sb.append(title);
+        sb.append(" : ");
+        sb.append(sbf.format(endDate.getTime()));
+        return sb.toString();
     }
 }

@@ -7,7 +7,6 @@ import android.util.Xml;
 import com.unuldur.uminc.R;
 import com.unuldur.uminc.connection.Connection;
 import com.unuldur.uminc.connection.IConnection;
-import com.unuldur.uminc.model.Etudiant;
 import com.unuldur.uminc.model.ICalendar;
 import com.unuldur.uminc.model.IEtudiant;
 import com.unuldur.uminc.model.IEvent;
@@ -16,7 +15,6 @@ import com.unuldur.uminc.model.UE;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -34,13 +32,13 @@ public class FullCalendarRecuperator implements ICalendarRecuperator {
     public FullCalendarRecuperator(Context context) {
         connection = new Connection(context);
         this.context = context;
-        downloader = new SimpleCalendarDownloader(connection, context);
+        downloader = new Ical4jCalendarDownloader(connection, context);
     }
 
     public FullCalendarRecuperator(IConnection connection, Context context) {
         this.connection = connection;
         this.context = context;
-        downloader = new SimpleCalendarDownloader(connection, context);
+        downloader = new Ical4jCalendarDownloader(connection, context);
     }
 
     @Override
@@ -56,6 +54,7 @@ public class FullCalendarRecuperator implements ICalendarRecuperator {
                 adressOk.add(adress);
             }
         }
+
         return cal;
     }
 
@@ -69,10 +68,9 @@ public class FullCalendarRecuperator implements ICalendarRecuperator {
             for(UE ue :e.getActualUEs()){
                 String[] eventSplit = event.getTitre().split("-");
                 String gr = "";
-                if(ue.getGroupe().getBytes().length >= 3){
-                    gr = String.valueOf(ue.getGroupe().getBytes()[2]);
+                if(ue.getGroupe().length() >= 3){
+                    gr = String.valueOf(ue.getGroupe().toCharArray()[2]);
                 }
-                Log.d("CalendarRecuperator", gr);
                 if(eventSplit[0].contains(ue.getId()) &&
                         (eventSplit[1].contains("Cours") ||
                                 eventSplit[1].contains("Examen") ||
