@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.unuldur.uminc.calendarRecuperator.FullCalendarRecuperator;
 import com.unuldur.uminc.calendarRecuperator.ICalendarRecuperator;
@@ -77,6 +78,7 @@ public class UeChooserActivity extends AppCompatActivity implements View.OnClick
         protected void onPostExecute(final ICalendar success) {
             mCalendarTask = null;
             if (success != null) {
+                etudiant.addCalendar(success);
                 String filename = getString(R.string.etudiant_saver);
                 FileOutputStream outputStream;
                 try {
@@ -92,7 +94,7 @@ public class UeChooserActivity extends AppCompatActivity implements View.OnClick
                 startActivity(intent);
                 finish();
             }else{
-                Log.d("LOL", "error");
+                Toast.makeText(getBaseContext(), "Erreur de connexion", Toast.LENGTH_SHORT).show();
             }
         }
 

@@ -55,7 +55,7 @@ public class FullCalendarRecuperator implements ICalendarRecuperator {
                 adressOk.add(adress);
             }
         }
-
+        cal.setAdress(adressOk);
         return cal;
     }
 
@@ -67,20 +67,18 @@ public class FullCalendarRecuperator implements ICalendarRecuperator {
         for(IEvent event: events){
             Log.d("CalendarRecuperator", event.getTitre());
             String[] eventSplit = event.getTitre().split("-");
-            Log.d("CalendarRecuperator", Arrays.toString(eventSplit));
             if (eventSplit.length < 3) continue;
             for(UE ue :e.getActualUEs()){
                 String gr = "";
                 if(ue.getGroupe().length() >= 3){
                     gr = String.valueOf(ue.getGroupe().toCharArray()[2]);
                 }
-                Log.d("CalendarRecuperator", String.valueOf(eventSplit[0].contains(ue.getId())));
-                Log.d("CalendarRecuperator", String.valueOf(eventSplit[1].contains("Cours")));
                 if(eventSplit[0].contains(ue.getId()) &&
                         (eventSplit[1].contains("Cours") ||
                                 eventSplit[1].contains("Examen") ||
+                                eventSplit[1].equals("TD") ||
+                                eventSplit[1].equals("TME") ||
                                 eventSplit[1].contains(gr))){
-                    Log.d("CalendarRecuperator", "Ajouter");
                     cal.addEvent(event);
                     ok = true;
                 }
@@ -91,6 +89,7 @@ public class FullCalendarRecuperator implements ICalendarRecuperator {
 
     public List<String> getGlobalAdress(){
         String configCaldavzap = connection.getPage(context.getString(R.string.caldavzap_config_adress));
+        if(configCaldavzap == null) return null;
         String[] lines = configCaldavzap.split("\n");
         List<String> adress = new ArrayList<>();
         boolean checkLineNext = false;

@@ -12,4 +12,6 @@ public interface IEtudiant extends Serializable {
     String getPassword();
     List<UE> getUEs();
     List<UE> getActualUEs();
+    void addCalendar(ICalendar calendar);
+    ICalendar getCalendar();
 }

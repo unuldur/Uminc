@@ -13,6 +13,7 @@ public class Etudiant implements IEtudiant{
     private String password;
     private List<UE> ues;
     private List<UE> actualsUes;
+    private ICalendar calendar = new SimpleCalendar();
 
     public Etudiant(String numEtu, String password, List<UE> ues) {
         this.numEtu = numEtu;
@@ -42,5 +43,15 @@ public class Etudiant implements IEtudiant{
     @Override
     public List<UE> getActualUEs() {
         return actualsUes;
+    }
+
+    @Override
+    public void addCalendar(ICalendar calendar) {
+        this.calendar = calendar;
+    }
+
+    @Override
+    public ICalendar getCalendar() {
+        return calendar;
     }
 }

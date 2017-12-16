@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.unuldur.uminc.model.ICalendar;
+import com.unuldur.uminc.model.IEtudiant;
 import com.unuldur.uminc.model.IEvent;
 import com.unuldur.uminc.model.SimpleCalendar;
 import com.unuldur.uminc.model.SimpleEvent;
@@ -39,66 +40,44 @@ import java.util.List;
 public class CalendarFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private static final int WEEKS_IN_YEARS = 52;
     private static final int HEIGH = 30;
-    private ICalendar calendar;
     private GridLayout grdl;
     private int nbChildBaseCount;
+    private static final String ETUDIANT_KEY = "etudiant";
+    IEtudiant etudiant;
+
     public CalendarFragment() {
         // Required empty public constructor
     }
 
-    public static CalendarFragment newInstance() {
-        return new CalendarFragment();
+    public static CalendarFragment newInstance(IEtudiant etudiant) {
+        CalendarFragment cf = new CalendarFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ETUDIANT_KEY, etudiant);
+        cf.setArguments(bundle);
+        return cf;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        calendar = new SimpleCalendar();
-
-        calendar.addEvent(new SimpleEvent("titre 1", "15-15 201",
-                new GregorianCalendar(2017,11,4,8,30,0),
-                new GregorianCalendar(2017,11,4,10,30,0)));
-        calendar.addEvent(new SimpleEvent("titre 1", "15-15 201",
-                new GregorianCalendar(2017,11,5,8,30,0),
-                new GregorianCalendar(2017,11,5,10,30,0)));
-        calendar.addEvent(new SimpleEvent("titre 1", "15-15 201",
-                new GregorianCalendar(2017,11,6,8,30,0),
-                new GregorianCalendar(2017,11,6,10,30,0)));
-        calendar.addEvent(new SimpleEvent("titre 1", "15-15 201",
-                new GregorianCalendar(2017,11,7,8,30,0),
-                new GregorianCalendar(2017,11,7,10,30,0)));
-        calendar.addEvent(new SimpleEvent("titre 1", "15-15 201",
-                new GregorianCalendar(2017,11,8,8,30,0),
-                new GregorianCalendar(2017,11,8,10,30,0)));
-        calendar.addEvent(new SimpleEvent("titre 1 - 2", "15-15 201",
-                new GregorianCalendar(2017,11,4,10,45,0),
-                new GregorianCalendar(2017,11,4,12,45,0)));
-        calendar.addEvent(new SimpleEvent("titre 2 - 1", "15-15 201",
-                new GregorianCalendar(2017,11,4,13,45,0),
-                new GregorianCalendar(2017,11,4,15,45,0)));
-        calendar.addEvent(new SimpleEvent("titre 2 - 2", "15-15 201",
-                new GregorianCalendar(2017,11,4,16,0,0),
-                new GregorianCalendar(2017,11,4,18,0,0)));
-        calendar.addEvent(new SimpleEvent("titre prev", "15-15 201",
-                new GregorianCalendar(2017,10,28,16,0,0),
-                new GregorianCalendar(2017,10,28,18,0,0)));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        etudiant = (IEtudiant) getArguments().getSerializable(ETUDIANT_KEY);
         return inflater.inflate(R.layout.fragment_calendar, container, false);
     }
 
     private void initGrid(GridLayout gridLayout, int weeks, int years){
-        List<IEvent> events = calendar.getWeeksEvents(weeks, years);
+        List<IEvent> events = etudiant.getCalendar().getWeeksEvents(weeks, years);
         int childCount =  gridLayout.getChildCount();
         for (int i = childCount - 1; i >= nbChildBaseCount; i--) {
             gridLayout.removeViewAt(i);
         }
         if(events == null)
             return;
+
         for(int i = 1; i < gridLayout.getColumnCount(); i++){
             for (int j = 1; j < gridLayout.getRowCount(); j++) {
                 TextView s = new TextView(getContext());
@@ -118,6 +97,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
             int indexrow = (cStart.get(Calendar.HOUR_OF_DAY) - 8) * 4 + (cStart.get(Calendar.MINUTE) / 15) + 1;
             int indexrowend = (cEnd.get(Calendar.HOUR_OF_DAY) - 8) * 4 + (cEnd.get(Calendar.MINUTE) / 15) + 1;
             b.setHeight(HEIGH * (indexrowend - indexrow + 1));
+            b.setWidth(400);
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

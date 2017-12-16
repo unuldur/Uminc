@@ -1,5 +1,6 @@
 package com.unuldur.uminc.model;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -8,11 +9,20 @@ import java.util.Date;
  * Created by Unuldur on 01/12/2017.
  */
 
-public class SimpleEvent implements IEvent {
+public class SimpleEvent implements IEvent, Serializable {
     private String title;
     private String localisation;
     private Calendar startDate;
     private Calendar endDate;
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof SimpleEvent)) return false;
+        SimpleEvent event = (SimpleEvent) obj;
+        if(!event.startDate.equals(startDate)) return false;
+        if(!event.endDate.equals(endDate)) return false;
+        return true;
+    }
 
     public SimpleEvent(String title, String localisation, Calendar startDate, Calendar endDate) {
         this.title = title;

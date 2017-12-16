@@ -10,5 +10,6 @@ public interface ICalendar {
     void addEvent(IEvent event);
     List<IEvent> getAllEvents();
     List<IEvent> getWeeksEvents(int weeks, int year);
-
+    void setAdress(List<String> adress);
+    List<String> getAdress();
 }
