@@ -8,10 +8,6 @@ import com.unuldur.uminc.connection.IConnection;
 import com.unuldur.uminc.model.IEvent;
 import com.unuldur.uminc.model.SimpleEvent;
 
-
-import net.fortuna.ical4j.model.property.RRule;
-import net.fortuna.ical4j.model.property.Summary;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;

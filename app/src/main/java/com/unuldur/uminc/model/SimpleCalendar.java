@@ -11,8 +11,8 @@ import java.util.Map;
  */
 
 public class SimpleCalendar implements ICalendar, Serializable {
-    Map<String, List<IEvent>> maps = new HashMap<>();
-    List<String> adress = new ArrayList<>();
+    private Map<String, List<IEvent>> maps = new HashMap<>();
+    private List<String> adress = new ArrayList<>();
     @Override
     public void addEvent(IEvent event) {
         String id = event.getWeek() +" "+ event.getYear();
@@ -59,5 +59,13 @@ public class SimpleCalendar implements ICalendar, Serializable {
             sb.append(event.toString());
         }
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof SimpleCalendar)) return false;
+        SimpleCalendar cal = (SimpleCalendar)obj;
+        if(!cal.maps.equals(maps)) return false;
+        return true;
     }
 }

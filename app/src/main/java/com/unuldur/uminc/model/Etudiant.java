@@ -3,6 +3,8 @@ package com.unuldur.uminc.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by Unuldur on 06/12/2017.
@@ -11,14 +13,15 @@ import java.util.List;
 public class Etudiant implements IEtudiant{
     private String numEtu;
     private String password;
-    private List<UE> ues;
+    private Set<UE> ues;
     private List<UE> actualsUes;
     private ICalendar calendar = new SimpleCalendar();
 
     public Etudiant(String numEtu, String password, List<UE> ues) {
         this.numEtu = numEtu;
         this.password = password;
-        this.ues = ues;
+        this.ues = new TreeSet<>();
+        this.ues.addAll(ues);
         this.actualsUes = new ArrayList<>();
     }
 
@@ -37,7 +40,9 @@ public class Etudiant implements IEtudiant{
 
     @Override
     public List<UE> getUEs() {
-        return ues;
+        List<UE> u = new ArrayList<>();
+        u.addAll(ues);
+        return u;
     }
 
     @Override

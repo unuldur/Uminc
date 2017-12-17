@@ -30,6 +30,7 @@ import com.unuldur.uminc.model.DbufrConnection;
 import com.unuldur.uminc.model.ICalendar;
 import com.unuldur.uminc.model.IDbufrConnection;
 import com.unuldur.uminc.model.IEtudiant;
+import com.unuldur.uminc.model.UE;
 
 import org.json.JSONObject;
 
@@ -188,7 +189,11 @@ public class UeChooserActivity extends AppCompatActivity implements View.OnClick
             showProgress(false);
 
             if (success != null) {
-                etudiant = success;
+                for (UE ue: success.getUEs()){
+                    if(!etudiant.getUEs().contains(ue)){
+                        etudiant.getUEs().add(ue);
+                    }
+                }
                 ListAdapter adapter = new EtudiantUeChooserAdapter(getBaseContext(),android.R.layout.list_content, etudiant);
                 lv.setAdapter(adapter);
             } else {

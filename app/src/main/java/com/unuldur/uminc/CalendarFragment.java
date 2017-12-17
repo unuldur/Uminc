@@ -3,6 +3,7 @@ package com.unuldur.uminc;
 
 import android.app.Dialog;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -17,14 +19,23 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.ListAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.unuldur.uminc.calendarRecuperator.ICalendarRecuperator;
+import com.unuldur.uminc.calendarRecuperator.MyCalendarDownloader;
+import com.unuldur.uminc.calendarRecuperator.SimpleCalendarRecuperator;
+import com.unuldur.uminc.connection.Connection;
+import com.unuldur.uminc.model.DbufrConnection;
 import com.unuldur.uminc.model.ICalendar;
+import com.unuldur.uminc.model.IDbufrConnection;
 import com.unuldur.uminc.model.IEtudiant;
 import com.unuldur.uminc.model.IEvent;
 import com.unuldur.uminc.model.SimpleCalendar;
 import com.unuldur.uminc.model.SimpleEvent;
+import com.unuldur.uminc.model.UE;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -44,8 +55,10 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
     private static final int HEIGH = 30;
     private GridLayout grdl;
     private int nbChildBaseCount;
+    private Spinner spinner;
     private static final String ETUDIANT_KEY = "etudiant";
-    IEtudiant etudiant;
+    private IEtudiant etudiant;
+    private SyncroniseCalendar syncroniseCalendar;
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -147,7 +160,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final Spinner spinner = getView().findViewById(R.id.spinnerCalendar);
+        spinner = getView().findViewById(R.id.spinnerCalendar);
         final List<Calendar> weeks = getWeeks();
         EventAdpater adapter = new EventAdpater(getContext(), android.R.layout.simple_spinner_item, weeks);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -203,5 +216,55 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.main, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.sync_item) {
+            if (syncroniseCalendar == null) {
+                syncroniseCalendar = new SyncroniseCalendar();
+                syncroniseCalendar.execute((Void) null);
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private class SyncroniseCalendar  extends AsyncTask<Void, Void, ICalendar> {
+        private final ICalendarRecuperator connection;
+        SyncroniseCalendar() {
+            connection = new SimpleCalendarRecuperator(new MyCalendarDownloader(new Connection(getContext()), getContext()));
+        }
+
+        @Override
+        protected void onPreExecute() {
+            Toast.makeText(getContext(), "Synchronisation", Toast.LENGTH_SHORT).show();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected ICalendar doInBackground(Void... params) {
+            return connection.getCalendar(etudiant);
+        }
+
+        @Override
+        protected void onPostExecute(final ICalendar success) {
+            syncroniseCalendar = null;
+
+            if (success != null) {
+                Toast.makeText(getContext(), "Synchronisation terminé", Toast.LENGTH_SHORT).show();
+                etudiant.addCalendar(success);
+                Calendar cal = (Calendar)spinner.getItemAtPosition(spinner.getSelectedItemPosition());
+                initGrid(grdl, cal.get(Calendar.WEEK_OF_YEAR), cal.get(Calendar.YEAR));
+            } else {
+                Toast.makeText(getContext(), "Erreur de connexion", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            syncroniseCalendar = null;
+        }
     }
 }
