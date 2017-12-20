@@ -111,7 +111,10 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
         }
         for(final IEvent e:events) {
             Button b = new AppCompatButton(gridLayout.getContext());
-            b.setBackgroundColor(Color.GRAY);
+            if(e.getUE() != null)
+                b.setBackgroundColor(e.getUE().getColor());
+            else
+                b.setBackgroundColor(Color.GRAY);
             b.setText(String.format("%s\n%s", e.getTitre(), e.getLocalisation()));
             Calendar cStart = e.getStartDate();
             Calendar cEnd = e.getEndDate();

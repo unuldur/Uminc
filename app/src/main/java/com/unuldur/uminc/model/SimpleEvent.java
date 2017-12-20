@@ -14,6 +14,7 @@ public class SimpleEvent implements IEvent, Serializable {
     private String localisation;
     private Calendar startDate;
     private Calendar endDate;
+    private UE ue;
 
     @Override
     public boolean equals(Object obj) {
@@ -59,6 +60,16 @@ public class SimpleEvent implements IEvent, Serializable {
     @Override
     public String getLocalisation() {
         return localisation;
+    }
+
+    @Override
+    public UE getUE() {
+        return ue;
+    }
+
+    @Override
+    public void setUE(UE e) {
+        ue = e;
     }
 
     @Override

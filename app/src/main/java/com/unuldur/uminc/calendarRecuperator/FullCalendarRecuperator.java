@@ -79,6 +79,7 @@ public class FullCalendarRecuperator implements ICalendarRecuperator {
                                 eventSplit[1].equals("TD") ||
                                 eventSplit[1].equals("TME") ||
                                 eventSplit[1].contains(gr))){
+                    event.setUE(ue);
                     cal.addEvent(event);
                     ok = true;
                 }

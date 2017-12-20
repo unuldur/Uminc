@@ -14,5 +14,7 @@ public interface IEvent {
     Calendar getEndDate();
     String getTitre();
     String getLocalisation();
+    UE getUE();
+    void setUE(UE e);
 
 }
