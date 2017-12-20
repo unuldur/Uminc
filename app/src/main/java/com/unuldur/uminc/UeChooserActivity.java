@@ -4,19 +4,15 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -32,9 +28,6 @@ import com.unuldur.uminc.model.IDbufrConnection;
 import com.unuldur.uminc.model.IEtudiant;
 import com.unuldur.uminc.model.UE;
 
-import org.json.JSONObject;
-
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 

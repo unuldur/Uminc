@@ -26,14 +26,18 @@ public class SimpleCalendarRecuperator implements ICalendarRecuperator {
     public ICalendar getCalendar(IEtudiant e) {
         ICalendar cal = new SimpleCalendar();
         for (String adress: e.getCalendar().getAdress()) {
-            addAdresse(adress, cal, e);
+            if(!addAdresse(adress, cal, e))
+            {
+                return null;
+            }
         }
+        cal.setAdress(e.getCalendar().getAdress());
         return cal;
     }
 
-    private void addAdresse(String adress, ICalendar cal, IEtudiant e){
+    private boolean addAdresse(String adress, ICalendar cal, IEtudiant e){
         List<IEvent> events = downloader.getEventsFromAdress(adress);
-        if(events == null) return;
+        if(events == null) return false;
         Log.d("CalendarRecuperator", adress);
         for(IEvent event: events){
             Log.d("CalendarRecuperator", event.getTitre());
@@ -54,5 +58,6 @@ public class SimpleCalendarRecuperator implements ICalendarRecuperator {
                 }
             }
         }
+        return true;
     }
 }

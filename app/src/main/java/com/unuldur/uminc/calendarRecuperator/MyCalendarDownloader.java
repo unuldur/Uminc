@@ -84,10 +84,10 @@ public class MyCalendarDownloader implements ICalendarDownloader {
                         rrule = line.split(":")[1];
                     }
                     if(line.contains("SUMMARY")){
-                        summary = line.split(":")[1];
+                        summary = line.split(":",2)[1];
                     }
                     if(line.contains("LOCATION")){
-                        String[] splits = line.split(":");
+                        String[] splits = line.split(":",2);
                         if(splits.length > 1){
                             location = splits[1];
                         }

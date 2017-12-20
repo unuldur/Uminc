@@ -2,11 +2,13 @@ package com.unuldur.uminc;
 
 
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,6 +39,8 @@ import com.unuldur.uminc.model.SimpleCalendar;
 import com.unuldur.uminc.model.SimpleEvent;
 import com.unuldur.uminc.model.UE;
 
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -93,27 +97,28 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
         }
         if(events == null)
             return;
-
-        for(int i = 1; i < gridLayout.getColumnCount(); i++){
-            for (int j = 1; j < gridLayout.getRowCount(); j++) {
-                TextView s = new TextView(getContext());
-                s.setHeight(HEIGH);
-                GridLayout.LayoutParams glp = new GridLayout.LayoutParams();
-                glp.rowSpec = GridLayout.spec(j);
-                glp.columnSpec = GridLayout.spec(i);
-                gridLayout.addView(s, glp);
-            }
+        final float scale = getContext().getResources().getDisplayMetrics().density;
+        int dp = (int) (getResources().getDimension(R.dimen.collumn_calendar_size) / scale);
+        int pixels = (int) (dp * scale + 0.5f);
+        int height = (int) (getResources().getDimension(R.dimen.row_callendar_size) / scale / 2);
+        for (int j = 1; j < gridLayout.getRowCount(); j++) {
+            TextView s = new TextView(getContext());
+            s.setHeight(height);
+            GridLayout.LayoutParams glp = new GridLayout.LayoutParams();
+            glp.rowSpec = GridLayout.spec(j);
+            glp.columnSpec = GridLayout.spec(0);
+            gridLayout.addView(s, glp);
         }
         for(final IEvent e:events) {
-            Button b = new Button(getContext());
+            Button b = new AppCompatButton(gridLayout.getContext());
             b.setBackgroundColor(Color.GRAY);
             b.setText(String.format("%s\n%s", e.getTitre(), e.getLocalisation()));
             Calendar cStart = e.getStartDate();
             Calendar cEnd = e.getEndDate();
             int indexrow = (cStart.get(Calendar.HOUR_OF_DAY) - 8) * 4 + (cStart.get(Calendar.MINUTE) / 15) + 1;
             int indexrowend = (cEnd.get(Calendar.HOUR_OF_DAY) - 8) * 4 + (cEnd.get(Calendar.MINUTE) / 15) + 1;
-            b.setHeight(HEIGH * (indexrowend - indexrow + 1));
-            b.setWidth(400);
+            b.setHeight(height * (indexrowend - indexrow));
+            b.setWidth(pixels);
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -123,13 +128,12 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
             });
             GridLayout.Spec row = GridLayout.spec(indexrow, indexrowend - indexrow);
             GridLayout.Spec col = GridLayout.spec(cStart.get(Calendar.DAY_OF_WEEK) - 1);
-            Log.d("Calendar", "" + cStart.get(Calendar.DAY_OF_WEEK));
             GridLayout.LayoutParams gridLayoutParam = new GridLayout.LayoutParams(row, col);
             gridLayoutParam.setMargins(1,1,1,1);
+
             gridLayout.addView(b, gridLayoutParam);
 
         }
-        Log.d("Calendar", "============================");
     }
 
     private List<Calendar> getWeeks(){
@@ -239,7 +243,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
 
         @Override
         protected void onPreExecute() {
-            Toast.makeText(getContext(), "Synchronisation", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Synchronisation en cours...", Toast.LENGTH_SHORT).show();
             super.onPreExecute();
         }
 
@@ -255,6 +259,16 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
             if (success != null) {
                 Toast.makeText(getContext(), "Synchronisation terminé", Toast.LENGTH_SHORT).show();
                 etudiant.addCalendar(success);
+                String filename = getString(R.string.etudiant_saver);
+                FileOutputStream outputStream;
+                try {
+                    outputStream = getContext().openFileOutput(filename, Context.MODE_PRIVATE);
+                    ObjectOutputStream oos = new ObjectOutputStream(outputStream);
+                    oos.writeObject(etudiant);
+                    outputStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 Calendar cal = (Calendar)spinner.getItemAtPosition(spinner.getSelectedItemPosition());
                 initGrid(grdl, cal.get(Calendar.WEEK_OF_YEAR), cal.get(Calendar.YEAR));
             } else {
