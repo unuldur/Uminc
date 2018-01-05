@@ -1,7 +1,10 @@
 package com.unuldur.uminc.model;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 
+import com.unuldur.uminc.R;
 import com.unuldur.uminc.connection.Connection;
 import com.unuldur.uminc.connection.IConnection;
 
@@ -12,6 +15,7 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Unuldur on 06/12/2017.
@@ -19,12 +23,15 @@ import java.util.List;
 
 public class DbufrConnection implements IDbufrConnection {
     private IConnection connection;
+    private Context context;
     public DbufrConnection(Context context) {
         connection = new Connection(context);
+        this.context = context;
     }
 
-    public DbufrConnection(IConnection connection) {
+    public DbufrConnection(IConnection connection, Context context) {
         this.connection = connection;
+        this.context = context;
     }
 
     @Override
@@ -47,7 +54,14 @@ public class DbufrConnection implements IDbufrConnection {
             if(cols.size() == 0){
                 continue;
             }
-            uesL.add(new UE(cols.get(1).text(),cols.get(3).text(),cols.get(0).text()));
+            TypedArray ta = context.getResources().obtainTypedArray(R.array.colors_calendars);
+            int[] colors = new int[ta.length()];
+            for (int i = 0; i < ta.length(); i++) {
+                colors[i] = ta.getColor(i, 0);
+            }
+            ta.recycle();
+            Random random = new Random();
+            uesL.add(new UE(cols.get(1).text(),cols.get(3).text(),cols.get(0).text(), colors[random.nextInt(colors.length)]));
         }
         return uesL;
     }

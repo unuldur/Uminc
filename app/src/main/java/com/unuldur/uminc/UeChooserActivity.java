@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +31,8 @@ import com.unuldur.uminc.model.UE;
 
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Unuldur on 07/12/2017.
@@ -42,6 +45,8 @@ public class UeChooserActivity extends AppCompatActivity implements View.OnClick
     private LinearLayout mlinearLayout;
     private ProgressBar mprogressView;
     private ListView lv;
+    private List<UE> chang;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,11 +64,15 @@ public class UeChooserActivity extends AppCompatActivity implements View.OnClick
         mlinearLayout =  findViewById(R.id.linearChooser);
         mprogressView = findViewById(R.id.progressBar_chooser);
 
+        chang = new ArrayList<>(etudiant.getActualUEs());
     }
 
     @Override
     public void onClick(View view) {
         if(mCalendarTask != null || syncronyseUes != null) return;
+        if(chang.equals(etudiant.getActualUEs())) {
+            goToHome();
+            return;}
         mCalendarTask = new GetCalendarTask(new FullCalendarRecuperator(getBaseContext()), etudiant);
         showProgress(true);
         mCalendarTask.execute((Void) null);
@@ -114,6 +123,22 @@ public class UeChooserActivity extends AppCompatActivity implements View.OnClick
         return super.onOptionsItemSelected(item);
     }
 
+    public void goToHome(){
+        String filename = getString(R.string.etudiant_saver);
+        FileOutputStream outputStream;
+        try {
+            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(outputStream);
+            oos.writeObject(etudiant);
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+        intent.putExtra("etudiant", etudiant);
+        startActivity(intent);
+        finish();
+    }
 
     private class GetCalendarTask extends AsyncTask<Void, Void, ICalendar> {
 
@@ -135,24 +160,12 @@ public class UeChooserActivity extends AppCompatActivity implements View.OnClick
             showProgress(false);
             if (success != null) {
                 etudiant.addCalendar(success);
-                String filename = getString(R.string.etudiant_saver);
-                FileOutputStream outputStream;
-                try {
-                    outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
-                    ObjectOutputStream oos = new ObjectOutputStream(outputStream);
-                    oos.writeObject(etudiant);
-                    outputStream.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                intent.putExtra("etudiant", etudiant);
-                startActivity(intent);
-                finish();
+                goToHome();
             }else{
                 Toast.makeText(getBaseContext(), "Erreur de connexion", Toast.LENGTH_SHORT).show();
             }
         }
+
 
         @Override
         protected void onCancelled() {

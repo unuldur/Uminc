@@ -17,12 +17,11 @@ public class UE implements Serializable, Comparable {
     private String name;
     private String groupe;
     private int color;
-    public UE(String id, String name, String groupe) {
+    public UE(String id, String name, String groupe, int color) {
         this.id = id;
         this.name = name;
         this.groupe = groupe;
-        Random rnd = new Random();
-        color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        this.color = color;
     }
 
     public String getId() {
@@ -45,6 +44,10 @@ public class UE implements Serializable, Comparable {
         if(!ue.getId().equals(id)) return false;
         if(!ue.getGroupe().equals(groupe)) return false;
         return true;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 
     public int getColor() {
