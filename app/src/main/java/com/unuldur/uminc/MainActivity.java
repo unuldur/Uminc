@@ -1,5 +1,6 @@
 package com.unuldur.uminc;
 
+import android.app.usage.UsageEvents;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +20,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.unuldur.uminc.model.IEtudiant;
+import com.unuldur.uminc.model.IEvent;
+import com.unuldur.uminc.model.SimpleEvent;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

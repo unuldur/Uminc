@@ -216,7 +216,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean("grdl_init", false);
+        outState.putSerializable("etudiant", etudiant);
     }
 
     @Override
@@ -260,7 +260,6 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
             syncroniseCalendar = null;
 
             if (success != null) {
-                Toast.makeText(getContext(), "Synchronisation terminé", Toast.LENGTH_SHORT).show();
                 etudiant.addCalendar(success);
                 String filename = getString(R.string.etudiant_saver);
                 FileOutputStream outputStream;
@@ -272,6 +271,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                Toast.makeText(getContext(), "Synchronisation terminé", Toast.LENGTH_SHORT).show();
                 Calendar cal = (Calendar)spinner.getItemAtPosition(spinner.getSelectedItemPosition());
                 initGrid(grdl, cal.get(Calendar.WEEK_OF_YEAR), cal.get(Calendar.YEAR));
             } else {

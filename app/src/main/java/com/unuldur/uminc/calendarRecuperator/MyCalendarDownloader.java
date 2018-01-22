@@ -61,6 +61,7 @@ public class MyCalendarDownloader implements ICalendarDownloader {
             String location = null;
             String rrule = null;
             List<String> exdates = new ArrayList<>();
+            boolean locationSuite = false;
             while (line != null) {
                 if(line.equals("BEGIN:VEVENT")){
                     readVevent = true;
@@ -86,10 +87,17 @@ public class MyCalendarDownloader implements ICalendarDownloader {
                     if(line.contains("SUMMARY")){
                         summary = line.split(":",2)[1];
                     }
+                    if(line.contains("SEQUENCE")){
+                        locationSuite = false;
+                    }
+                    if (locationSuite){
+                        location += line.trim();
+                    }
                     if(line.contains("LOCATION")){
                         String[] splits = line.split(":",2);
                         if(splits.length > 1){
                             location = splits[1];
+                            locationSuite = true;
                         }
                     }
                     if(line.contains("DTSTART")){

@@ -9,7 +9,7 @@ import java.util.Date;
  * Created by Unuldur on 01/12/2017.
  */
 
-public class SimpleEvent implements IEvent, Serializable {
+public class SimpleEvent implements IEvent{
     private String title;
     private String localisation;
     private Calendar startDate;
