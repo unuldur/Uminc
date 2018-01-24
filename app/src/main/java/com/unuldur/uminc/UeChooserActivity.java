@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -134,7 +135,10 @@ public class UeChooserActivity extends AppCompatActivity implements View.OnClick
         } catch (Exception e) {
             e.printStackTrace();
         }
-        AlarmManagerEvent.getInstance(this).createNotifications(etudiant.getCalendar().getAllEvents(), 15 * 60 * 1000);
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        if(sharedPref.getBoolean(getString(R.string.notif_file), true)) {
+            AlarmManagerEvent.getInstance(this).createNotifications(etudiant.getCalendar().getAllEvents(), 15 * 60 * 1000);
+        }
         Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("etudiant", etudiant);
         startActivity(intent);

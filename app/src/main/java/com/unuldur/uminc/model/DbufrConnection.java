@@ -42,7 +42,7 @@ public class DbufrConnection implements IDbufrConnection {
         Document doc = Jsoup.parse(dbufrHtmlStr);
         Element body = doc.body();
         Elements tables = body.getElementsByClass("Table");
-        return new Etudiant(numEtu,mdp, getUEs(tables.get(0)));
+        return new Etudiant(numEtu,mdp, getUEs(tables.get(0)), getNotes(tables.get(1)));
     }
 
 
@@ -64,5 +64,19 @@ public class DbufrConnection implements IDbufrConnection {
             uesL.add(new UE(cols.get(1).text(),cols.get(3).text(),cols.get(0).text(), colors[random.nextInt(colors.length)]));
         }
         return uesL;
+    }
+
+    private List<Note> getNotes(Element notes){
+        List<Note> notesL = new ArrayList<>();
+        Elements rows = notes.getElementsByTag("tr");
+        for (Element row: rows){
+            Elements cols = row.getElementsByTag("td");
+            if(cols.size() == 0){
+                continue;
+            }
+
+            notesL.add(new Note(cols.get(2).text(),cols.get(1).text(),cols.get(0).text()));
+        }
+        return notesL;
     }
 }

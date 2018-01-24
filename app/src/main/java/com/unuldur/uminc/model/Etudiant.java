@@ -15,6 +15,7 @@ public class Etudiant implements IEtudiant{
     private String password;
     private Set<UE> ues;
     private List<UE> actualsUes;
+    private Set<Note> notes;
     private ICalendar calendar = new SimpleCalendar();
 
     public Etudiant(String numEtu, String password, List<UE> ues) {
@@ -23,7 +24,20 @@ public class Etudiant implements IEtudiant{
         this.ues = new TreeSet<>();
         this.ues.addAll(ues);
         this.actualsUes = new ArrayList<>();
+        notes = new TreeSet<>();
     }
+
+    public Etudiant(String numEtu, String password, List<UE> ues, List<Note> notes) {
+        this.numEtu = numEtu;
+        this.password = password;
+        this.ues = new TreeSet<>();
+        this.ues.addAll(ues);
+        this.actualsUes = new ArrayList<>();
+        this.notes = new TreeSet<>();
+        this.notes.addAll(notes);
+    }
+
+
 
     public Etudiant() {
     }
@@ -48,6 +62,19 @@ public class Etudiant implements IEtudiant{
     @Override
     public List<UE> getActualUEs() {
         return actualsUes;
+    }
+
+    @Override
+    public List<Note> getNotes() {
+        List<Note> u = new ArrayList<>();
+        u.addAll(notes);
+        return u;
+    }
+
+    @Override
+    public void setNotes(List<Note> notes) {
+        this.notes = new TreeSet<>();
+        this.notes.addAll(notes);
     }
 
     @Override

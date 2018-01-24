@@ -3,6 +3,7 @@ package com.unuldur.uminc;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -271,7 +272,10 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                AlarmManagerEvent.getInstance(getContext()).createNotifications(etudiant.getCalendar().getAllEvents(), 15 * 60 * 1000);
+                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                if(sharedPref.getBoolean(getContext().getString(R.string.notif_file), true)) {
+                    AlarmManagerEvent.getInstance(getContext()).createNotifications(etudiant.getCalendar().getAllEvents(), 15 * 60 * 1000);
+                }
                 Toast.makeText(getContext(), "Synchronisation terminé", Toast.LENGTH_SHORT).show();
                 Calendar cal = (Calendar)spinner.getItemAtPosition(spinner.getSelectedItemPosition());
                 initGrid(grdl, cal.get(Calendar.WEEK_OF_YEAR), cal.get(Calendar.YEAR));

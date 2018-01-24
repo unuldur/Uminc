@@ -13,6 +13,8 @@ public interface IEtudiant extends Serializable {
     String getPassword();
     List<UE> getUEs();
     List<UE> getActualUEs();
+    List<Note> getNotes();
+    void setNotes(List<Note> notes);
     void addCalendar(ICalendar calendar);
     ICalendar getCalendar();
 }

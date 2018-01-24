@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity
                 fragment = CalendarFragment.newInstance(etudiant);
                 break;
             case R.id.nav_notes:
+                fragment = NotesFragment.newInstance(etudiant);
                 break;
             case R.id.nav_manage:
                 fragment = ParameterFragment.newInstance(etudiant);

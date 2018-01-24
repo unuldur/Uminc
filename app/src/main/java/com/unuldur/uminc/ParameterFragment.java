@@ -56,13 +56,13 @@ public class ParameterFragment extends Fragment implements View.OnClickListener{
         b2.setOnClickListener(this);
         aSwitch = getActivity().findViewById(R.id.switchActivateNotif);
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        aSwitch.setChecked(sharedPref.getBoolean("switchBoolean", true));
+        aSwitch.setChecked(sharedPref.getBoolean(getString(R.string.notif_file), true));
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putBoolean("switchBoolean", b);
+                editor.putBoolean(getString(R.string.notif_file), b);
                 editor.apply();
                 if(b){
                     AlarmManagerEvent.getInstance(getContext()).createNotifications(etudiant.getCalendar().getAllEvents(), 15 * 60 * 1000);
