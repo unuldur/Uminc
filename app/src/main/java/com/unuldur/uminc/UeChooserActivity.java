@@ -134,6 +134,7 @@ public class UeChooserActivity extends AppCompatActivity implements View.OnClick
         } catch (Exception e) {
             e.printStackTrace();
         }
+        AlarmManagerEvent.getInstance(this).createNotifications(etudiant.getCalendar().getAllEvents(), 15 * 60 * 1000);
         Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("etudiant", etudiant);
         startActivity(intent);

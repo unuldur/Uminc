@@ -271,6 +271,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                AlarmManagerEvent.getInstance(getContext()).createNotifications(etudiant.getCalendar().getAllEvents(), 15 * 60 * 1000);
                 Toast.makeText(getContext(), "Synchronisation terminé", Toast.LENGTH_SHORT).show();
                 Calendar cal = (Calendar)spinner.getItemAtPosition(spinner.getSelectedItemPosition());
                 initGrid(grdl, cal.get(Calendar.WEEK_OF_YEAR), cal.get(Calendar.YEAR));

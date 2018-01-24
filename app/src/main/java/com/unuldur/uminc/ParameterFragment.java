@@ -1,15 +1,20 @@
 package com.unuldur.uminc;
 
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.unuldur.uminc.model.Etudiant;
 import com.unuldur.uminc.model.IEtudiant;
@@ -21,7 +26,8 @@ import com.unuldur.uminc.model.IEtudiant;
 public class ParameterFragment extends Fragment implements View.OnClickListener{
 
     private static final String ETUDIANT_KEY = "etudiant";
-    IEtudiant etudiant;
+    private IEtudiant etudiant;
+    private Switch aSwitch;
 
     public static ParameterFragment newInstance(IEtudiant etudiant) {
         ParameterFragment pf = new ParameterFragment();
@@ -48,6 +54,24 @@ public class ParameterFragment extends Fragment implements View.OnClickListener{
         b1.setOnClickListener(this);
         Button b2 = getActivity().findViewById(R.id.buttonChangeUEs);
         b2.setOnClickListener(this);
+        aSwitch = getActivity().findViewById(R.id.switchActivateNotif);
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        aSwitch.setChecked(sharedPref.getBoolean("switchBoolean", true));
+        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putBoolean("switchBoolean", b);
+                editor.apply();
+                if(b){
+                    AlarmManagerEvent.getInstance(getContext()).createNotifications(etudiant.getCalendar().getAllEvents(), 15 * 60 * 1000);
+                }else{
+                    AlarmManagerEvent.getInstance(getContext()).cancelAlarm(etudiant.getCalendar().getAllEvents());
+                }
+            }
+        });
+
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -56,10 +80,12 @@ public class ParameterFragment extends Fragment implements View.OnClickListener{
         Intent intent = null;
         switch (view.getId()){
             case R.id.buttonChangeEtudiant:
+                AlarmManagerEvent.getInstance(getContext()).cancelAlarm(etudiant.getCalendar().getAllEvents());
                 getContext().deleteFile(getString(R.string.etudiant_saver));
                 intent = new Intent(getContext(), LoginActivity.class);
                 break;
             case R.id.buttonChangeUEs:
+                AlarmManagerEvent.getInstance(getContext()).cancelAlarm(etudiant.getCalendar().getAllEvents());
                 getContext().deleteFile(getString(R.string.etudiant_saver));
                 intent = new Intent(getContext(), UeChooserActivity.class);
                 intent.putExtra("etudiant", etudiant);
@@ -70,4 +96,5 @@ public class ParameterFragment extends Fragment implements View.OnClickListener{
             getActivity().finish();
         }
     }
+
 }

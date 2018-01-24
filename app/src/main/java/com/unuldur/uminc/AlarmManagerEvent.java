@@ -23,34 +23,31 @@ public class AlarmManagerEvent {
         return event;
     }
 
-    private List<Integer> pendingIntentsIds;
     private AlarmManager alarmMgr;
     private Context context;
 
     public AlarmManagerEvent(Context context) {
-        this.pendingIntentsIds = new ArrayList<>();
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         this.context = context;
     }
 
     public void createNotifications(List<IEvent> events, long timeLimit){
-        cancelAlarm();
+        cancelAlarm(events);
         for (IEvent event : events) {
             if(event.getStartDate().getTimeInMillis() < System.currentTimeMillis()) continue;
             Intent intent = new Intent(context, AlarmReceiverEvent.class);
             intent.putExtra("event", event);
             PendingIntent alarmIntent = PendingIntent.getBroadcast(context, (int)event.getStartDate().getTimeInMillis(), intent, 0);
             alarmMgr.set(AlarmManager.RTC_WAKEUP, event.getStartDate().getTimeInMillis() - timeLimit, alarmIntent);
-            pendingIntentsIds.add((int)event.getStartDate().getTimeInMillis());
         }
     }
 
-    public void cancelAlarm(){
-        for (int i : pendingIntentsIds)
+    public void cancelAlarm(List<IEvent> events){
+        for (IEvent event : events)
         {
             if (alarmMgr!= null) {
                 Intent intent = new Intent(context, AlarmReceiverEvent.class);
-                PendingIntent alarmIntent = PendingIntent.getBroadcast(context, i, intent, 0);
+                PendingIntent alarmIntent = PendingIntent.getBroadcast(context, (int)event.getStartDate().getTimeInMillis(), intent, 0);
                 alarmMgr.cancel(alarmIntent);
             }
         }

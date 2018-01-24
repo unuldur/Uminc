@@ -19,6 +19,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/ChangeUe" />
+
+        <Switch
+            android:id="@+id/switchActivateNotif"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/SwitchParameter" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
