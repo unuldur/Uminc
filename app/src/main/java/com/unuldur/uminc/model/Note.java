@@ -30,4 +30,24 @@ public class Note implements Comparable, Serializable{
         if (res != 0) return res;
         return name.compareTo(((Note)o).name);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Note)) return false;
+
+        Note note1 = (Note) o;
+
+        if (note != null ? !note.equals(note1.note) : note1.note != null) return false;
+        if (name != null ? !name.equals(note1.name) : note1.name != null) return false;
+        return UE != null ? UE.equals(note1.UE) : note1.UE == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = note != null ? note.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (UE != null ? UE.hashCode() : 0);
+        return result;
+    }
 }

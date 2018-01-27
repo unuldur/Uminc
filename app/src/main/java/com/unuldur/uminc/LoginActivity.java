@@ -3,6 +3,9 @@ package com.unuldur.uminc;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -190,6 +193,10 @@ public class LoginActivity extends AppCompatActivity{
 
 
     private void changeActivity(IEtudiant etudiant, Class<?> clas){
+        AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        Intent intentAlarm = new Intent(this, NoteUpdateReceiver.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intentAlarm, 0);
+        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0,AlarmManager.INTERVAL_DAY, alarmIntent);
         Intent intent = new Intent(getApplicationContext(), clas);
         intent.putExtra("etudiant", etudiant);
         startActivity(intent);
