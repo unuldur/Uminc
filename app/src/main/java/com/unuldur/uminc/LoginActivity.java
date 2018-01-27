@@ -193,10 +193,7 @@ public class LoginActivity extends AppCompatActivity{
 
 
     private void changeActivity(IEtudiant etudiant, Class<?> clas){
-        AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        Intent intentAlarm = new Intent(this, NoteUpdateReceiver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intentAlarm, 0);
-        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0,AlarmManager.INTERVAL_DAY, alarmIntent);
+
         Intent intent = new Intent(getApplicationContext(), clas);
         intent.putExtra("etudiant", etudiant);
         startActivity(intent);
@@ -229,6 +226,10 @@ public class LoginActivity extends AppCompatActivity{
             showProgress(false);
 
             if (success != null) {
+                AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                Intent intentAlarm = new Intent(getBaseContext(), NoteUpdateReceiver.class);
+                PendingIntent alarmIntent = PendingIntent.getBroadcast(getBaseContext(), 0, intentAlarm, 0);
+                alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0,AlarmManager.INTERVAL_DAY, alarmIntent);
                 changeActivity(success, UeChooserActivity.class);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
