@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity
         //initializing the fragment object which is selected
         switch (itemId) {
             case R.id.nav_accueil:
-                fragment = AccueilFragment.newInstance();
+                fragment = AccueilFragment.newInstance(etudiant);
                 break;
             case R.id.nav_calendar:
                 fragment = CalendarFragment.newInstance(etudiant);

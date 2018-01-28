@@ -37,6 +37,11 @@ public class UE implements Serializable, Comparable {
     }
 
     @Override
+    public String toString() {
+        return id + " - " + name;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof UE)) return false;
         UE ue = (UE) obj;

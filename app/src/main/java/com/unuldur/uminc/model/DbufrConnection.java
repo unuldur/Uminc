@@ -3,6 +3,7 @@ package com.unuldur.uminc.model;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.widget.ListView;
 
 import com.unuldur.uminc.R;
 import com.unuldur.uminc.connection.Connection;
@@ -42,7 +43,8 @@ public class DbufrConnection implements IDbufrConnection {
         Document doc = Jsoup.parse(dbufrHtmlStr);
         Element body = doc.body();
         Elements tables = body.getElementsByClass("Table");
-        return new Etudiant(numEtu,mdp, getUEs(tables.get(0)), getNotes(tables.get(1)));
+        List<UE> ues = getUEs(tables.get(0));
+        return new Etudiant(numEtu,mdp, ues , getNotes(tables.get(1), ues));
     }
 
 
@@ -66,7 +68,7 @@ public class DbufrConnection implements IDbufrConnection {
         return uesL;
     }
 
-    private List<Note> getNotes(Element notes){
+    private List<Note> getNotes(Element notes, List<UE> ues){
         List<Note> notesL = new ArrayList<>();
         Elements rows = notes.getElementsByTag("tr");
         for (Element row: rows){
@@ -74,8 +76,15 @@ public class DbufrConnection implements IDbufrConnection {
             if(cols.size() == 0){
                 continue;
             }
-
-            notesL.add(new Note(cols.get(2).text(),cols.get(1).text(),cols.get(0).text()));
+            String id = cols.get(0).text().split("-")[0];
+            UE uenote = null;
+            for(UE ue: ues){
+                if(ue.getId().equals(id)){
+                    uenote = ue;
+                    break;
+                }
+            }
+            notesL.add(new Note(cols.get(2).text(),cols.get(1).text(), uenote));
         }
         return notesL;
     }

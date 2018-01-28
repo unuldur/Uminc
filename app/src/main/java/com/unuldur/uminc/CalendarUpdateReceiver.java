@@ -5,34 +5,36 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.unuldur.uminc.model.DbufrConnection;
+import com.unuldur.uminc.calendarRecuperator.ICalendarRecuperator;
+import com.unuldur.uminc.calendarRecuperator.MyCalendarDownloader;
+import com.unuldur.uminc.calendarRecuperator.SimpleCalendarRecuperator;
+import com.unuldur.uminc.connection.Connection;
+import com.unuldur.uminc.model.Etudiant;
+import com.unuldur.uminc.model.ICalendar;
 import com.unuldur.uminc.model.IEtudiant;
-import com.unuldur.uminc.model.Note;
+import com.unuldur.uminc.model.IEvent;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
 
 /**
- * Created by Unuldur on 26/01/2018.
+ * Created by Unuldur on 28/01/2018.
  */
 
-public class NoteUpdateReceiver extends BroadcastReceiver {
+public class CalendarUpdateReceiver extends BroadcastReceiver {
     private static int MID = 0;
 
     @Override
@@ -50,7 +52,6 @@ public class NoteUpdateReceiver extends BroadcastReceiver {
             etu = null;
         }
         if(etu == null) return;
-
         NotificationManager notificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -59,12 +60,12 @@ public class NoteUpdateReceiver extends BroadcastReceiver {
         NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(context, Notification.CATEGORY_EVENT)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Uminc")
-                .setContentText("Mise à jour notes...")
+                .setContentText("Mise à jour calendrier...")
                 .setSound(alarmSound);
         notificationManager.notify(MID, mNotifyBuilder.build());
         MID++;
 
-        SyncroniseNotesIn sync = new SyncroniseNotesIn(etu, context);
+        SyncroniseCalendar sync = new SyncroniseCalendar(context, etu);
         sync.execute();
     }
 
@@ -74,37 +75,27 @@ public class NoteUpdateReceiver extends BroadcastReceiver {
         return (networkInfo != null && networkInfo.isConnected());
     }
 
-    public class SyncroniseNotesIn extends SyncroniseNotes {
-        private IEtudiant etudiant;
-        private Context context;
-        public SyncroniseNotesIn(IEtudiant etudiant, Context context) {
-            super(etudiant, context);
+    private class SyncroniseCalendar  extends AsyncTask<Void, Void, ICalendar> {
+        private final ICalendarRecuperator connection;
+        private final IEtudiant etudiant;
+        private final Context context;
+        SyncroniseCalendar(Context context, IEtudiant etudiant) {
             this.etudiant = etudiant;
             this.context = context;
+
+            connection = new SimpleCalendarRecuperator(new MyCalendarDownloader(new Connection(context),context));
         }
 
+        @Override
+        protected ICalendar doInBackground(Void... params) {
+            return connection.getCalendar(etudiant);
+        }
 
         @Override
-        protected void onPostExecute(List<Note> notes) {
+        protected void onPostExecute(final ICalendar success) {
 
-            NotificationManager notificationManager = (NotificationManager) context
-                    .getSystemService(Context.NOTIFICATION_SERVICE);
-
-
-            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            if(notes != null){
-                for(Note n : notes){
-                    if(!etudiant.getNotes().contains(n)){
-                        NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(context, Notification.CATEGORY_STATUS)
-                                .setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle("Uminc")
-                                .setContentText("Nouvelle note : " + n.toString())
-                                .setSound(alarmSound);
-                        notificationManager.notify(MID, mNotifyBuilder.build());
-                        MID++;
-                    }
-                }
-                etudiant.setNotes(notes);
+            if (success != null) {
+                etudiant.addCalendar(success);
                 String filename = context.getString(R.string.etudiant_saver);
                 FileOutputStream outputStream;
                 try {
@@ -114,6 +105,10 @@ public class NoteUpdateReceiver extends BroadcastReceiver {
                     outputStream.close();
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+                if(sharedPref.getBoolean(context.getString(R.string.notif_file), true)) {
+                    AlarmManagerEvent.getInstance(context).createNotifications(etudiant.getCalendar().getAllEvents(), 15 * 60 * 1000);
                 }
             }
         }

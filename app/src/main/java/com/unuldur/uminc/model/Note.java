@@ -11,9 +11,9 @@ import java.io.Serializable;
 public class Note implements Comparable, Serializable{
     private String note;
     private String name;
-    private String UE;
+    private UE UE;
 
-    public Note(String note, String name, String UE) {
+    public Note(String note, String name, UE UE) {
         this.note = note;
         this.name = name;
         this.UE = UE;
@@ -21,7 +21,19 @@ public class Note implements Comparable, Serializable{
 
     @Override
     public String toString() {
-        return UE + " - " + name + " : " + note;
+        return UE.getId()+ " - " + name + " : " + note;
+    }
+
+    public com.unuldur.uminc.model.UE getUE() {
+        return UE;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override

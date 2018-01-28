@@ -61,4 +61,5 @@
     <string name="syncr_item">Synchroniser</string>
     <string name="SwitchParameter">Activer les notifications</string>
     <string name="notif_file">notifactver</string>
+    <string name="accueil_list_ue">Les UEs choisies :</string>
 </resources>
