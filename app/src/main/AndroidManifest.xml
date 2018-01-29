@@ -37,10 +37,10 @@
             </intent-filter>
         </activity>
         <receiver android:process=":remote" android:name=".AlarmReceiverEvent"/>
-        <receiver android:process=":remote" android:name=".NoteUpdateReceiver">
+        <receiver android:process=":remote" android:name=".NetworkChangedReceiver">
             <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
                 <action android:name="android.intent.action.MANAGE_NETWORK_USAGE"/>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
         <receiver android:name=".BootReceiver">

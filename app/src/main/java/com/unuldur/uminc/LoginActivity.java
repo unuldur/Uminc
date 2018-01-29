@@ -8,23 +8,16 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
 
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,8 +29,6 @@ import com.unuldur.uminc.model.IEtudiant;
 
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A login screen that offers login via email/password.
@@ -226,10 +217,6 @@ public class LoginActivity extends AppCompatActivity{
             showProgress(false);
 
             if (success != null) {
-                AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-                Intent intentAlarm = new Intent(getBaseContext(), NoteUpdateReceiver.class);
-                PendingIntent alarmIntent = PendingIntent.getBroadcast(getBaseContext(), 0, intentAlarm, 0);
-                alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, AlarmManager.INTERVAL_DAY,AlarmManager.INTERVAL_DAY, alarmIntent);
                 changeActivity(success, UeChooserActivity.class);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

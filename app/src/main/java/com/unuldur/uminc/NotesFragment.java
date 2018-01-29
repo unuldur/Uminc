@@ -144,7 +144,7 @@ public class NotesFragment extends Fragment {
                         hash.put(id, new ArrayList<String>());
                         head.add(id);
                     }
-                    hash.get(id).add(note.getName() + " " + note.getUE());
+                    hash.get(id).add(note.getName() + " " + note.getNote());
                 }
                 ExpandableListAdapter adapter  = new NoteExandableListAdapater(getContext(), head, hash);
                 lv.setAdapter(adapter);

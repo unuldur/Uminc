@@ -35,13 +35,9 @@ public class BootReceiver extends BroadcastReceiver {
         }
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED") && etu != null) {
             AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-            Intent intentAlarm = new Intent(context, NoteUpdateReceiver.class);
+            Intent intentAlarm = new Intent(context, NetworkChangedReceiver.class);
             PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intentAlarm, 0);
             alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0,AlarmManager.INTERVAL_DAY, alarmIntent);
-
-            Intent intentUpdateCalendar = new Intent(context, CalendarUpdateReceiver.class);
-            PendingIntent pendingIntentCalendar = PendingIntent.getBroadcast(context, 1, intentUpdateCalendar, 0);
-            alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0,AlarmManager.INTERVAL_DAY, pendingIntentCalendar);
 
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
             if(sharedPref.getBoolean(context.getString(R.string.notif_file), true)) {

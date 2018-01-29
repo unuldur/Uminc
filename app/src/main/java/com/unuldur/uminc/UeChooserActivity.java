@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -143,9 +142,9 @@ public class UeChooserActivity extends AppCompatActivity implements View.OnClick
         }
 
         AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        Intent intentUpdateCalendar = new Intent(this, CalendarUpdateReceiver.class);
-        PendingIntent pendingIntentCalendar = PendingIntent.getBroadcast(this, 1, intentUpdateCalendar, 0);
-        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, AlarmManager.INTERVAL_DAY,AlarmManager.INTERVAL_DAY, pendingIntentCalendar);
+        Intent intentUpdate = new Intent(this, NetworkChangedReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intentUpdate, 0);
+        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, AlarmManager.INTERVAL_DAY,AlarmManager.INTERVAL_DAY, pendingIntent);
 
         Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("etudiant", etudiant);
