@@ -33,6 +33,7 @@ import java.util.List;
  */
 
 public class NoteUpdate {
+    private static int MID = 0;
 
     public void update(Context context) {
         String filename = context.getString(R.string.etudiant_saver);
