@@ -73,6 +73,15 @@ public class SimpleEvent implements IEvent{
     }
 
     @Override
+    public int getId() {
+        int annee = startDate.get(Calendar.YEAR) - 2015;
+        int day = startDate.get(Calendar.DAY_OF_YEAR);
+        int minute = startDate.get(Calendar.MINUTE);
+        int hour = startDate.get(Calendar.HOUR_OF_DAY);
+        return minute + hour * 60 + day * 24 * 60 + annee * 24 * 60 * 365;
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb =new StringBuilder();
         SimpleDateFormat sbf = new SimpleDateFormat("dd-MM-yyyy kk:mm");

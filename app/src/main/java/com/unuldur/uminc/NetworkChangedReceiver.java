@@ -19,11 +19,11 @@ public class NetworkChangedReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(Calendar.getInstance().getTimeInMillis() - date.getTimeInMillis()> 1000*60){
+        if(Calendar.getInstance().getTimeInMillis() - date.getTimeInMillis()> 1000*60*24*60){
             changedToday = false;
             date = Calendar.getInstance();
         }
-        Log.d("Network",  " " + (date.getTimeInMillis() - Calendar.getInstance().getTimeInMillis()));
+        Log.d("Network",  " " + ( Calendar.getInstance().getTimeInMillis() - date.getTimeInMillis()));
         Log.d("Network", "changed " + changedToday);
         if(!changedToday && isOnline(context)) {
             CalendarUpdate cu = new CalendarUpdate();

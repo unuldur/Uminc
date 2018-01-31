@@ -17,5 +17,6 @@ public interface IEvent extends Serializable {
     String getLocalisation();
     UE getUE();
     void setUE(UE e);
+    int getId();
 
 }

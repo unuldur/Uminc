@@ -41,6 +41,7 @@ public class BootReceiver extends BroadcastReceiver {
 
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
             if(sharedPref.getBoolean(context.getString(R.string.notif_file), true)) {
+                Log.d("Boot", "Shared preference true");
                 AlarmManagerEvent.getInstance(context).createNotifications(etu.getCalendar().getAllEvents(), 15*1000*60);
             }
         }

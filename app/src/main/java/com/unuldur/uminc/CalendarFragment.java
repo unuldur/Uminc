@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
@@ -272,7 +273,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
                 if(sharedPref.getBoolean(getContext().getString(R.string.notif_file), true)) {
                     AlarmManagerEvent.getInstance(getContext()).createNotifications(etudiant.getCalendar().getAllEvents(), 15 * 60 * 1000);
                 }

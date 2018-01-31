@@ -3,6 +3,7 @@ package com.unuldur.uminc;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Build;
@@ -55,12 +56,12 @@ public class ParameterFragment extends Fragment implements View.OnClickListener{
         Button b2 = getActivity().findViewById(R.id.buttonChangeUEs);
         b2.setOnClickListener(this);
         aSwitch = getActivity().findViewById(R.id.switchActivateNotif);
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         aSwitch.setChecked(sharedPref.getBoolean(getString(R.string.notif_file), true));
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putBoolean(getString(R.string.notif_file), b);
                 editor.apply();

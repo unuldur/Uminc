@@ -18,23 +18,12 @@ import com.unuldur.uminc.model.IEvent;
  */
 
 public class AlarmReceiverEvent extends BroadcastReceiver{
-    private static int MID = 0;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         IEvent event = (IEvent)intent.getSerializableExtra("event");
-        NotificationManager notificationManager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-
-
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-        NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(context, Notification.CATEGORY_EVENT)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Uminc")
-                .setContentText(event.getTitre() + " - " + event.getLocalisation())
-                .setSound(alarmSound);
-        notificationManager.notify(MID, mNotifyBuilder.build());
-        MID++;
+        Log.d("Alarm", event + "  " + context + " " + intent);
+        Log.d("Alarm", "yay " + intent.getSerializableExtra("event"));
+        UmincNotification.launchNotification(event.getTitre() + " - " + event.getLocalisation(), context);
     }
 }

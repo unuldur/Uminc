@@ -35,7 +35,6 @@ import java.util.Calendar;
  */
 
 public class CalendarUpdate {
-    private static int MID = 0;
 
     public void update(Context context) {
         String filename = context.getString(R.string.etudiant_saver);
@@ -50,18 +49,8 @@ public class CalendarUpdate {
             etu = null;
         }
         if(etu == null) return;
-        NotificationManager notificationManager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-        NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(context, Notification.CATEGORY_EVENT)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Uminc")
-                .setContentText("Mise à jour calendrier...")
-                .setSound(alarmSound);
-        notificationManager.notify(MID, mNotifyBuilder.build());
-        MID++;
+        UmincNotification.launchNotification("Mise à jour calendrier...", context);
 
         SyncroniseCalendar sync = new SyncroniseCalendar(context, etu);
         sync.execute();

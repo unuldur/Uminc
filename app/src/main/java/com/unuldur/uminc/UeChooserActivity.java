@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -136,7 +137,7 @@ public class UeChooserActivity extends AppCompatActivity implements View.OnClick
         } catch (Exception e) {
             e.printStackTrace();
         }
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         if(sharedPref.getBoolean(getString(R.string.notif_file), true)) {
             AlarmManagerEvent.getInstance(this).createNotifications(etudiant.getCalendar().getAllEvents(), 15 * 60 * 1000);
         }

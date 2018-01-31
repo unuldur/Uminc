@@ -58,6 +58,17 @@ public class MainActivity extends AppCompatActivity
         if(idFragmentActuel == -1){
             idFragmentActuel = R.id.nav_accueil;
         }
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.SECOND, c.get(Calendar.SECOND) + 30);
+        IEvent event = new SimpleEvent("Yay", "201", c, c);
+        Calendar c2 = Calendar.getInstance();
+        c2.set(Calendar.SECOND, c.get(Calendar.SECOND) + 70);
+        IEvent event2 = new SimpleEvent("Yay2", "202", c2, c2);
+        List<IEvent> events = new ArrayList<>();
+        events.add(event);
+        events.add(event2);
+        AlarmManagerEvent.getInstance(this).createNotifications(events, 0);
+        AlarmManagerEvent.getInstance(this).cancelAlarm(events);
         displaySelectedScreen(idFragmentActuel);
     }
 

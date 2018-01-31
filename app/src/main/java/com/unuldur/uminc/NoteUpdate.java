@@ -33,7 +33,6 @@ import java.util.List;
  */
 
 public class NoteUpdate {
-    private static int MID = 0;
 
     public void update(Context context) {
         String filename = context.getString(R.string.etudiant_saver);
@@ -49,18 +48,7 @@ public class NoteUpdate {
         }
         if(etu == null) return;
 
-        NotificationManager notificationManager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-        NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(context, Notification.CATEGORY_EVENT)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Uminc")
-                .setContentText("Mise à jour notes...")
-                .setSound(alarmSound);
-        notificationManager.notify(MID, mNotifyBuilder.build());
-        MID++;
+        UmincNotification.launchNotification("Mise à jour notes...", context);
 
         SyncroniseNotesIn sync = new SyncroniseNotesIn(etu, context);
         sync.execute();
@@ -79,21 +67,10 @@ public class NoteUpdate {
         @Override
         protected void onPostExecute(List<Note> notes) {
 
-            NotificationManager notificationManager = (NotificationManager) context
-                    .getSystemService(Context.NOTIFICATION_SERVICE);
-
-
-            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             if(notes != null){
                 for(Note n : notes){
                     if(!etudiant.getNotes().contains(n)){
-                        NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(context, Notification.CATEGORY_STATUS)
-                                .setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle("Uminc")
-                                .setContentText("Nouvelle note : " + n.toString())
-                                .setSound(alarmSound);
-                        notificationManager.notify(MID, mNotifyBuilder.build());
-                        MID++;
+                        UmincNotification.launchNotification("Nouvelle note : " + n.toString(), context);
                     }
                 }
                 etudiant.setNotes(notes);
