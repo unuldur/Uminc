@@ -100,9 +100,8 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
         if(events == null)
             return;
         final float scale = getContext().getResources().getDisplayMetrics().density;
-        int dp = (int) (getResources().getDimension(R.dimen.collumn_calendar_size) / scale);
-        int pixels = (int) (dp * scale + 0.5f);
-        int height = (int) (getResources().getDimension(R.dimen.row_callendar_size) / scale / 2);
+        int pixels = (int) (getResources().getDimension(R.dimen.collumn_calendar_size)+ 0.5f);
+        int height = (int) (getResources().getDimension(R.dimen.row_callendar_size));
         for (int j = 1; j < gridLayout.getRowCount(); j++) {
             TextView s = new TextView(getContext());
             s.setHeight(height);
@@ -169,7 +168,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        spinner = getView().findViewById(R.id.spinnerCalendar);
+        spinner = view.findViewById(R.id.spinnerCalendar);
         final List<Calendar> weeks = getWeeks();
         EventAdpater adapter = new EventAdpater(getContext(), android.R.layout.simple_spinner_item, weeks);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -178,7 +177,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
         spinner.setSelection(weeks.size() / 2);
         getActivity().setTitle("Calendrier");
 
-        ImageButton button = getView().findViewById(R.id.buttonNextWeek);
+        ImageButton button = view.findViewById(R.id.buttonNextWeek);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 int pos = spinner.getSelectedItemPosition();
@@ -189,7 +188,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
             }
         });
 
-        ImageButton button2 = getView().findViewById(R.id.buttonPrevWeek);
+        ImageButton button2 = view.findViewById(R.id.buttonPrevWeek);
         button2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 int pos = spinner.getSelectedItemPosition();
@@ -200,7 +199,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
             }
         });
 
-        grdl = getView().findViewById(R.id.grid_calendar);
+        grdl = view.findViewById(R.id.grid_calendar);
         nbChildBaseCount = grdl.getChildCount();
     }
 
