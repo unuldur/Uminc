@@ -38,4 +38,5 @@ dependencies {
     compile 'org.jsoup:jsoup:1.11.2'
     compile 'com.wada811:android-material-design-colors:3.0.0'
     compile 'com.thebluealliance:spectrum:0.7.1'
+    compile 'com.android.support:preference-v7:26.1.0'
 }

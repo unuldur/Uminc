@@ -92,6 +92,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
     }
 
     private void initGrid(GridLayout gridLayout, int weeks, int years){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         List<IEvent> events = etudiant.getCalendar().getWeeksEvents(weeks, years);
         int childCount =  gridLayout.getChildCount();
         for (int i = childCount - 1; i >= nbChildBaseCount; i--) {
@@ -99,7 +100,6 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
         }
         if(events == null)
             return;
-        final float scale = getContext().getResources().getDisplayMetrics().density;
         int pixels = (int) (getResources().getDimension(R.dimen.collumn_calendar_size)+ 0.5f);
         int height = (int) (getResources().getDimension(R.dimen.row_callendar_size));
         for (int j = 1; j < gridLayout.getRowCount(); j++) {
@@ -111,6 +111,10 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
             gridLayout.addView(s, glp);
         }
         for(final IEvent e:events) {
+            String horaire = e.getHoraire();
+            if(!sharedPref.getBoolean(e.getUE().toString() + "/" + horaire, true)){
+                continue;
+            }
             Button b = new AppCompatButton(gridLayout.getContext());
             if(e.getUE() != null)
                 b.setBackgroundColor(e.getUE().getColor());

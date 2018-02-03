@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Unuldur on 01/12/2017.
@@ -79,6 +80,15 @@ public class SimpleEvent implements IEvent{
         int minute = startDate.get(Calendar.MINUTE);
         int hour = startDate.get(Calendar.HOUR_OF_DAY);
         return minute + hour * 60 + day * 24 * 60 + annee * 24 * 60 * 365;
+    }
+
+    @Override
+    public String getHoraire() {
+        Locale locale = Locale.getDefault();
+        SimpleDateFormat sbf = new SimpleDateFormat("EEE kk:mm", locale);
+        String start = sbf.format(getStartDate().getTime());
+        String end = sbf.format(getEndDate().getTime());
+        return title +  ":\n" + start + " - " + end;
     }
 
     @Override

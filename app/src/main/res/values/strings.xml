@@ -62,4 +62,8 @@
     <string name="SwitchParameter">Activer les notifications</string>
     <string name="notif_file">notifactver</string>
     <string name="accueil_list_ue">Les UEs choisies :</string>
+    <string name="settings_notif">Notifications</string>
+    <string name="settings_account">Compte</string>
+    <string name="settings_ue">UEs</string>
+    <string name="checkbox_ue_settings_item">Visible</string>
 </resources>

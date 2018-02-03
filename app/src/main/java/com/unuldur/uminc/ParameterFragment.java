@@ -15,10 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.Switch;
 
 import com.unuldur.uminc.model.Etudiant;
 import com.unuldur.uminc.model.IEtudiant;
+import com.unuldur.uminc.model.UE;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by julie on 08/12/2017.
@@ -72,7 +79,17 @@ public class ParameterFragment extends Fragment implements View.OnClickListener{
                 }
             }
         });
-
+        ExpandableListView lv = getActivity().findViewById(R.id.elv_settings);
+        HashMap<UE, List<String>> hash = new HashMap<>();
+        for (UE ue: etudiant.getActualUEs()) {
+            List<String> horaires = etudiant.getCalendar().getHoraires(ue);
+            if(horaires == null){
+                horaires = new ArrayList<>();
+            }
+            hash.put(ue, horaires);
+        }
+        ExpandableListAdapter adapter  = new UeSettingsExpendableListAdapter(getContext(), etudiant.getActualUEs(), hash);
+        lv.setAdapter(adapter);
     }
 
     @TargetApi(Build.VERSION_CODES.M)

@@ -12,4 +12,6 @@ public interface ICalendar {
     List<IEvent> getWeeksEvents(int weeks, int year);
     void setAdress(List<String> adress);
     List<String> getAdress();
+    List<String> getHoraires(UE ue);
+    List<IEvent> getEventsByHoraire(UE ue, String horaire);
 }

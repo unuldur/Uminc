@@ -18,5 +18,6 @@ public interface IEvent extends Serializable {
     UE getUE();
     void setUE(UE e);
     int getId();
+    String getHoraire();
 
 }

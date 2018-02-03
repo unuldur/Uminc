@@ -1,9 +1,12 @@
 package com.unuldur.uminc.model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -12,7 +15,11 @@ import java.util.Map;
 
 public class SimpleCalendar implements ICalendar, Serializable {
     private Map<String, List<IEvent>> maps = new HashMap<>();
+    private Map<UE, Map<String, List<IEvent>>> horaireMap = new HashMap<>();
+
     private List<String> adress = new ArrayList<>();
+
+
     @Override
     public void addEvent(IEvent event) {
         String id = event.getWeek() +" "+ event.getYear();
@@ -25,6 +32,22 @@ public class SimpleCalendar implements ICalendar, Serializable {
         }
         simple.add(event);
         maps.put(id, simple);
+
+        Map<String, List<IEvent>> horaires = horaireMap.get(event.getUE());
+        if(horaires == null){
+            horaires = new HashMap<>();
+        }
+        String horaire = event.getHoraire();
+        List<IEvent> events = horaires.get(horaire);
+        if(events == null){
+            events = new ArrayList<>();
+        }
+        if(events.contains(event)){
+            events.remove(event);
+        }
+        events.add(event);
+        horaires.put(horaire, events);
+        horaireMap.put(event.getUE(), horaires);
     }
 
     @Override
@@ -49,6 +72,17 @@ public class SimpleCalendar implements ICalendar, Serializable {
     @Override
     public List<String> getAdress() {
         return adress;
+    }
+
+    @Override
+    public List<String> getHoraires(UE ue) {
+        if(horaireMap.get(ue) == null) return null;
+        return new ArrayList<>(horaireMap.get(ue).keySet());
+    }
+
+    @Override
+    public List<IEvent> getEventsByHoraire(UE ue, String horaire) {
+        return horaireMap.get(ue).get(horaire);
     }
 
     @Override
